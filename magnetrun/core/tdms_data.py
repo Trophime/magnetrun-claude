@@ -9,16 +9,15 @@ from .base_data import BaseData
 from .units import UnitManager
 from ..exceptions import DataFormatError
 
-
 class TdmsData(BaseData):
     """Handles TDMS data operations for MagnetRun data."""
-
+    
     def __init__(self, filename: str, groups: Dict, keys: List[str], data: Dict):
         super().__init__(filename, groups, keys, 1)
         self.data = data
         self.unit_manager = UnitManager()
         self._setup_units()
-
+    
     def _setup_units(self) -> None:
         """Set up units for TDMS data."""
         for entry in self.data:
@@ -30,9 +29,9 @@ class TdmsData(BaseData):
                     (group, channel) = entry.split("/")
                     if channel == "t":
                         self.units[entry] = ("t", self.unit_manager.ureg.second)
-
+                
                 self.units[entry] = self.unit_manager.get_pigbrother_units(group)
-
+    
     def get_data(self, key: Optional[Union[str, List[str]]] = None) -> pd.DataFrame:
         """Get TDMS data for specified keys."""
         if key is None:
