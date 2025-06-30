@@ -1,4 +1,3 @@
-"""
 # MagnetRun
 
 A Python package for analyzing magnetic measurement data from various sources including TDMS files, text files, and CSV files.
@@ -133,4 +132,3 @@ MIT License - see LICENSE file for details.
 - CLI interface with Click
 - Improved error handling
 - Type hints throughout
-"""

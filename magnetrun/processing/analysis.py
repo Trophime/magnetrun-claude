@@ -84,4 +84,3 @@ class DataAnalyzer:
             'smoothed_der2': smoothed_der2,
             'quantiles_der': quantiles_der
         }
-
