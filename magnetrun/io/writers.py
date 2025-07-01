@@ -1,17 +1,16 @@
+
 """File writing utilities."""
 
 from pathlib import Path
 from typing import Union, List
 import pandas as pd
 
-from ..core.magnet_data import MagnetData
-
 class DataWriter:
     """Utilities for writing data to various formats."""
     
     @staticmethod
     def to_csv(
-        magnet_data: MagnetData, 
+        magnet_data, 
         filepath: Union[str, Path], 
         keys: List[str] = None,
         separator: str = '\t'
@@ -28,7 +27,7 @@ class DataWriter:
     
     @staticmethod
     def to_excel(
-        magnet_data: MagnetData, 
+        magnet_data, 
         filepath: Union[str, Path], 
         keys: List[str] = None
     ) -> None:

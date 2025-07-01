@@ -1,437 +1,823 @@
 # MagnetRun
 
-A Python package for analyzing magnetic measurement data from various sources including TDMS files, text files, and CSV files.
+**A comprehensive Python package for analyzing magnetic measurement data from various sources.**
 
-## Features
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-- **Multi-format support**: Read TDMS, TXT, and CSV files
-- **Data cleaning**: Automatic removal of duplicates and empty columns
-- **Unit management**: Comprehensive unit handling with Pint
-- **Statistical analysis**: Peak detection, plateau analysis, breakpoint detection
-- **Visualization**: Built-in plotting capabilities with grouped options
-- **Configurable**: Housing-specific configurations for different magnet types
-- **Command chaining**: Build complex analysis workflows
-- **CLI interface**: Professional command-line tools with organized help
+## 🔬 Overview
 
-## Installation
+MagnetRun provides a unified interface for reading, processing, and visualizing magnetic measurement data from multiple file formats. It was designed to handle the complexity of different measurement systems while providing a simple, consistent API for data analysis.
+
+### 📊 Supported File Formats
+
+- **🔧 Pupitre files**: Space-separated data with .txt extension from pupitre measurement systems
+- **⚡ PigBrother files**: TDMS files from PigBrother measurement systems  
+- **📈 Bprofile files**: Profile measurement data in CSV format with .txt extension
+- **🔌 Extensible**: Easy to add support for new file formats
+
+## ✨ Key Features
+
+### 🎯 **Automatic Format Detection**
+```python
+# No need to specify format - automatically detected!
+data = MagnetData.from_file('measurement.tdms')    # TDMS format
+data = MagnetData.from_file('pupitre_data.txt')    # Space-separated
+data = MagnetData.from_file('bprofile.txt')        # CSV with headers
+```
+
+### 🔧 **Unified API**
+```python
+# Same interface regardless of file format
+keys = data.keys                           # Available columns
+field_data = data.get_data(['Field'])      # Extract data
+data.add_data('Power', 'Power = Field * Current')  # Add calculations
+info = data.get_info()                     # Get metadata
+```
+
+### 🏗️ **Extensible Architecture**
+```python
+# Easy to add new formats
+format_registry.register_format("custom", CustomReader, CustomData)
+```
+
+### 📏 **Unit-Aware Computing**
+Built-in support for physical units using Pint:
+```python
+# Automatic unit inference and conversion
+field_unit = data.get_unit_key('Field')    # ('B', tesla)
+temperature_unit = data.get_unit_key('T1') # ('T', degree_Celsius)
+```
+
+### 🎛️ **Housing-Specific Processing**
+```python
+# Automatic processing based on magnet housing type
+run = MagnetRun('M9', 'Lab1', data)
+run.prepare_data()  # Applies M9-specific transformations
+```
+
+## 🚀 Quick Start
+
+### Installation
 
 ```bash
 pip install magnetrun
 ```
 
-For development:
-```bash
-git clone https://github.com/yourusername/magnetrun.git
-cd magnetrun
-pip install -e .[dev]
-```
-
-## Quick Start
-
-### Python API
+### Basic Usage
 
 ```python
-from magnetrun import DataReader, DataAnalyzer, DataPlotter
+from magnetrun import MagnetData, MagnetRun
 
-# Read data file
-magnet_run = DataReader.read_file('data.txt', housing='M9')
+# Load data (format auto-detected)
+data = MagnetData.from_file('your_measurement_file.tdms')
 
-# Add time column (for pandas data)
-from magnetrun.processing import TimeProcessor
-TimeProcessor.add_time_column(magnet_run.magnet_data)
+# Explore the data
+print(f"Format: {data.format_type}")
+print(f"Available keys: {data.keys}")
+print(f"Data shape: {data.get_info()['metadata']['shape']}")
 
-# Analyze data
-peaks, _ = DataAnalyzer.find_peaks_in_data(magnet_run.magnet_data, 'Field')
-plateaus = DataAnalyzer.detect_plateaus(magnet_run.magnet_data, 'Field')
+# Create analysis object
+run = MagnetRun('M9', 'site1', data)
+run.prepare_data()  # Apply housing-specific processing
 
-# Plot results
-import matplotlib.pyplot as plt
-fig, ax = plt.subplots()
-DataPlotter.plot_time_series(magnet_run.magnet_data, ['Field'], ax=ax)
-plt.show()
+# Extract specific data
+field_current_data = data.get_data(['Field', 'Current'])
+
+# Add calculated columns
+data.add_data('Power', 'Power = Field * Current')
+
+# Get data with units
+symbol, unit = data.get_unit_key('Field')
+print(f"Field unit: {symbol} [{unit}]")
 ```
 
-## Command Line Interface
+## 📋 File Format Examples
 
-### Basic Commands
+### Pupitre Files (.txt)
+Space-separated values:
+```
+timestamp    Field    Current    Temperature
+0.0          0.0      0.0        20.1
+0.1          0.1      1.2        20.2
+0.2          0.2      2.4        20.3
+```
+
+### PigBrother Files (.tdms)
+TDMS files with grouped channels:
+```
+Groups: Courants_Alimentations, Champ_magnetique, Tensions
+Channels: Référence_A1, Référence_A2, Field_X, Field_Y
+```
+
+### Bprofile Files (.txt)  
+CSV format with specific column structure:
+```csv
+Index,Position (mm),Profile at Tr (%),Profile at max (%)
+0,299.7,-62.54857446812466,-51.83603303013679
+1,299.8,-62.515206120643384,-51.80767721498118
+2,299.9,-62.48169694682428,-51.77923216656832
+```
+
+## 🔧 Advanced Usage
+
+### Adding Calculated Data
+```python
+# Add new columns with formulas
+data.add_data('Power', 'Power = Field * Current')
+data.add_data('FieldSquared', 'FieldSquared = Field ** 2')
+
+# Specify units for new columns
+data.add_data('Energy', 'Energy = Power * time', unit='J')
+```
+
+### Housing-Specific Processing
+```python
+# Different housing configurations
+run_m8 = MagnetRun('M8', 'site1', data)   # M8 configuration
+run_m9 = MagnetRun('M9', 'site1', data)   # M9 configuration
+run_m10 = MagnetRun('M10', 'site1', data) # M10 configuration
+
+# Each applies different reference calculations and field mappings
+run_m9.prepare_data()
+```
+
+### Data Export
+```python
+from magnetrun.io.writers import DataWriter
+
+# Export to CSV
+DataWriter.to_csv(data, 'output.csv')
+
+# Export specific keys only
+DataWriter.to_csv(data, 'field_current.csv', keys=['Field', 'Current'])
+
+# Export to Excel
+DataWriter.to_excel(data, 'data.xlsx')
+```
+
+### Working with TDMS Data
+```python
+# TDMS files have grouped structure
+data = MagnetData.from_file('measurement.tdms')
+
+# Access specific group/channel
+field_data = data.get_data(['Champ_magnetique/Field_X'])
+current_data = data.get_data(['Courants_Alimentations/Référence_A1'])
+
+# Add cross-group calculations
+data.add_data('Courants_Alimentations/Total_Current', 
+              'Total_Current = Référence_A1 + Référence_A2')
+```
+
+## 🏗️ Architecture
+
+### Core Components
+
+```python
+# Main data container
+MagnetData    # Auto-detecting data loader
+MagnetRun     # High-level analysis interface
+
+# Format system
+BaseReader    # Abstract reader interface
+BaseData      # Abstract data handler
+FormatRegistry # Plugin management
+```
+
+### Extension Points
+
+#### Adding New File Formats
+```python
+from magnetrun.io.base_reader import BaseReader
+from magnetrun.core.base_data import BaseData
+from magnetrun.formats.registry import format_registry
+
+# 1. Create a reader
+class MyFormatReader(BaseReader):
+    @property
+    def format_name(self) -> str:
+        return "myformat"
+    
+    @property  
+    def supported_extensions(self) -> List[str]:
+        return ['.myext']
+    
+    def can_read(self, filepath: Path) -> bool:
+        # Detection logic
+        return filepath.suffix == '.myext'
+    
+    def read(self, filepath: Path) -> Dict[str, Any]:
+        # File reading logic
+        data = pd.read_csv(filepath)  # or custom parsing
+        return {
+            'data': data,
+            'format_type': self.format_name,
+            'metadata': {'shape': data.shape}
+        }
+
+# 2. Create a data handler  
+class MyFormatData(BaseData):
+    def __init__(self, filename: str, data: pd.DataFrame, metadata=None):
+        super().__init__(filename, "myformat", metadata)
+        self.data = data
+        self._keys = data.columns.tolist()
+        self._setup_units()
+    
+    def get_data(self, key=None):
+        if key is None:
+            return self.data.copy()
+        return self.data[key].copy()
+    
+    def add_data(self, key: str, formula: str, unit=None):
+        self.data.eval(formula, inplace=True)
+        self._keys.append(key)
+    
+    def _setup_units(self):
+        # Set up units for your format
+        pass
+
+# 3. Register the format
+format_registry.register_format("myformat", MyFormatReader, MyFormatData)
+
+# 4. Use immediately!
+data = MagnetData.from_file('data.myext')  # Works automatically!
+```
+
+#### Adding New Housing Configurations
+```python
+from magnetrun.config.housing_configs import HOUSING_CONFIGS, HousingConfig
+
+# Define new housing
+HOUSING_CONFIGS["M11"] = HousingConfig(
+    name="M11",
+    ih_ref_channels=["IH1", "IH2", "IH3", "IH4", "IH5"],
+    ib_ref_channels=["IB1", "IB2", "IB3", "IB4"],
+    field_mappings={"B_new": "Field"},
+    remove_channels=["obsolete_channel"]
+)
+
+# Use immediately
+run = MagnetRun('M11', 'site1', data)
+run.prepare_data()  # Applies M11-specific processing
+```
+
+## 🔍 API Reference
+
+### MagnetData
+
+The main data container class:
+
+```python
+# Class methods
+MagnetData.from_file(filepath)              # Auto-detect and load
+MagnetData.from_pandas(filename, dataframe) # From pandas DataFrame
+MagnetData.from_dict(filename, groups, keys, data) # From TDMS structure
+
+# Properties
+.filename      # Source filename
+.keys         # Available data keys
+.format_type  # Format name ('pupitre', 'pigbrother', 'bprofile')
+.units        # Unit information for each key
+.metadata     # Additional metadata
+
+# Methods
+.get_data(keys=None)              # Extract data
+.add_data(key, formula, unit=None) # Add calculated column
+.remove_data(keys)                # Remove columns
+.rename_data(mapping)             # Rename columns
+.get_info()                       # Get dataset information
+.get_unit_key(key)               # Get unit info for key
+```
+
+### MagnetRun
+
+High-level analysis interface:
+
+```python
+# Constructor
+MagnetRun(housing, site, magnet_data=None)
+
+# Properties
+.housing        # Housing type ('M8', 'M9', 'M10')
+.site          # Site identifier
+.magnet_data   # Associated MagnetData object
+.housing_config # Housing configuration
+
+# Methods
+.get_data(key=None)    # Get data from MagnetData
+.get_keys()           # Get available keys
+.prepare_data()       # Apply housing-specific processing
+```
+
+### DataWriter
+
+Export utilities:
+
+```python
+DataWriter.to_csv(magnet_data, filepath, keys=None, separator='\t')
+DataWriter.to_excel(magnet_data, filepath, keys=None)
+```
+
+## 💻 Command Line Interface
+
+MagnetRun includes a comprehensive CLI for batch processing and analysis without writing Python code.
+
+### Installation & Basic Usage
 
 ```bash
-# Get information about data files
-magnetrun data.txt info --housing M9 --list-keys
+# Install MagnetRun
+pip install magnetrun
 
-# Convert to CSV
-magnetrun data.txt info --convert
+# Verify installation
+magnetrun --version
+
+# Get help
+magnetrun --help
+```
+
+### CLI Command Overview
+
+```bash
+magnetrun info      # File information and validation
+magnetrun plot      # Data visualization  
+magnetrun stats     # Statistical analysis
+magnetrun add       # Data processing and formulas
+magnetrun select    # Data extraction and conversion
+```
+
+### File Information & Validation
+
+```bash
+# Basic file information
+magnetrun info show data.txt
+
+# List all available data keys
+magnetrun info show measurement.tdms --list-keys
+
+# Validate multiple files
+magnetrun info validate *.txt *.tdms
+
+# Convert files to CSV
+magnetrun info show data.txt --convert
+
+# Check supported formats
+magnetrun info formats
+```
+
+### Working with Multiple Files
+
+```bash
+# Process all TDMS files in current directory
+magnetrun info show *.tdms --list-keys
+
+# Process files in subdirectories
+magnetrun info show data/*.tdms measurements/*.txt --housing M9
+
+# Validate mixed file types
+magnetrun info validate data/*.txt measurements/*.tdms profiles/*.csv
+
+# Convert multiple files
+magnetrun info show *.tdms --convert
+```
+
+### Data Visualization
+
+```bash
+# Basic time series plot
+magnetrun plot show data.txt --keys Field Current --save
+
+# Plot multiple files
+magnetrun plot show *.tdms --keys Field --save --output-dir figures/
+
+# X-Y scatter plots
+magnetrun plot show data.txt --key-vs-key "Field-Current" --save
+
+# Normalized plots
+magnetrun plot show *.txt --keys Field Current --normalize --save
+
+# Overview plots with templates
+magnetrun plot overview *.tdms --template publication --save
+
+# Subplot grids
+magnetrun plot subplots data.txt --keys Field Current Temperature --cols 2
+
+# Breakpoint analysis
+magnetrun plot breakpoints *.tdms --keys Field --compare --save
+```
+
+### Statistical Analysis
+
+```bash
+# Basic statistical analysis
+magnetrun stats analyze data.txt --keys Field Current
+
+# Find local maxima
+magnetrun stats analyze *.tdms --localmax --save
+
+# Plateau detection
+magnetrun stats analyze data.txt --plateau --threshold 1e-3
+
+# Breakpoint detection
+magnetrun stats analyze *.txt --detect-bkpts --level 95 --save
+
+# Combined analysis on multiple files
+magnetrun stats analyze *.tdms --plateau --localmax --detect-bkpts --save
+```
+
+### Data Processing
+
+```bash
+# Add calculated columns
+magnetrun add formula data.txt --formula "Power = Field * Current"
+
+# Add and plot formula
+magnetrun add formula *.tdms --formula "Energy = Power * 0.1" --plot-formula --save
+
+# Process multiple files with formulas
+magnetrun add formula measurements/*.txt --formula "FieldNorm = Field / 10.0" --save
+```
+
+### Data Selection & Conversion
+
+```bash
+# Convert files to CSV
+magnetrun select extract *.tdms --convert
+
+# Extract time ranges
+magnetrun select extract data.txt --output-timerange "10;50" 
+
+# Extract specific data at times
+magnetrun select extract *.txt --output-time "5;10;15"
+
+# Extract specific keys
+magnetrun select extract data.txt --output-key "Field;Current"
+
+# Extract key pairs
+magnetrun select extract *.tdms --extract-pairkeys "Field-Current;Voltage-Current"
+```
+
+### Chaining CLI Commands
+
+MagnetRun CLI commands can be chained using shell operators for powerful batch processing:
+
+#### Sequential Processing
+```bash
+# Validate → Analyze → Plot → Export
+magnetrun info validate *.tdms && \
+magnetrun stats analyze *.tdms --plateau --save && \
+magnetrun plot overview *.tdms --template publication --save && \
+magnetrun select extract *.tdms --convert
+```
+
+#### Conditional Processing
+```bash
+# Only process if validation passes
+magnetrun info validate data.txt && magnetrun plot show data.txt --save
+```
+
+#### Parallel Processing with GNU Parallel
+```bash
+# Process files in parallel
+ls *.tdms | parallel magnetrun plot show {} --keys Field --save
+
+# Parallel analysis with different parameters
+ls *.txt | parallel magnetrun stats analyze {} --plateau --threshold {%}e-3
+```
+
+#### Advanced Batch Processing Scripts
+
+**Process by file type:**
+```bash
+#!/bin/bash
+# process_measurements.sh
+
+# Process all TDMS files
+echo "Processing TDMS files..."
+magnetrun info show *.tdms --list-keys > tdms_keys.txt
+magnetrun plot overview *.tdms --template standard --save --output-dir tdms_plots/
+magnetrun stats analyze *.tdms --plateau --localmax --save
+
+# Process all text files  
+echo "Processing text files..."
+magnetrun info show *.txt --list-keys > txt_keys.txt
+magnetrun plot show *.txt --keys Field Current --save --output-dir txt_plots/
+magnetrun add formula *.txt --formula "Power = Field * Current" --plot-formula --save
+
+# Convert everything to CSV
+echo "Converting to CSV..."
+magnetrun select extract *.tdms *.txt --convert
+
+echo "Batch processing complete!"
+```
+
+**Quality control pipeline:**
+```bash
+#!/bin/bash
+# quality_control.sh
+
+DATA_DIR="measurements"
+OUTPUT_DIR="analysis_results"
+mkdir -p $OUTPUT_DIR
+
+echo "=== MagnetRun Quality Control Pipeline ==="
+
+# 1. Validate all files
+echo "Step 1: Validating files..."
+magnetrun info validate $DATA_DIR/*.* > $OUTPUT_DIR/validation_report.txt
+
+# 2. Generate overview plots
+echo "Step 2: Generating overview plots..."
+magnetrun plot overview $DATA_DIR/*.tdms --template publication --save --output-dir $OUTPUT_DIR/overview/
+
+# 3. Statistical analysis
+echo "Step 3: Running statistical analysis..."
+magnetrun stats analyze $DATA_DIR/*.* --plateau --localmax --detect-bkpts --save > $OUTPUT_DIR/stats_summary.txt
+
+# 4. Create detailed plots for problematic files
+echo "Step 4: Detailed analysis..."
+magnetrun plot breakpoints $DATA_DIR/*.tdms --compare --save --output-dir $OUTPUT_DIR/breakpoints/
+
+# 5. Export processed data
+echo "Step 5: Exporting data..."
+magnetrun select extract $DATA_DIR/*.* --convert
+mv *.csv $OUTPUT_DIR/
+
+echo "Quality control complete! Results in $OUTPUT_DIR/"
+```
+
+#### Using with Make
+```makefile
+# Makefile for MagnetRun processing
+
+DATA_FILES := $(wildcard data/*.tdms data/*.txt)
+PLOT_DIR := plots
+RESULTS_DIR := results
+
+.PHONY: all validate analyze plot export clean
+
+all: validate analyze plot export
+
+validate:
+	magnetrun info validate $(DATA_FILES) > validation.log
+
+analyze: validate
+	magnetrun stats analyze $(DATA_FILES) --plateau --save
+
+plot: analyze
+	mkdir -p $(PLOT_DIR)
+	magnetrun plot overview $(DATA_FILES) --template publication --save --output-dir $(PLOT_DIR)/
+
+export: analyze
+	mkdir -p $(RESULTS_DIR)
+	magnetrun select extract $(DATA_FILES) --convert
+	mv *.csv $(RESULTS_DIR)/
+
+clean:
+	rm -rf $(PLOT_DIR) $(RESULTS_DIR) *.png *.csv validation.log
+```
+
+#### Real-World Example: Daily Data Processing
+```bash
+#!/bin/bash
+# daily_processing.sh - Process daily measurement files
+
+DATE=$(date +%Y%m%d)
+RAW_DATA="/data/measurements/$DATE"
+PROCESSED="/data/processed/$DATE"
+ARCHIVE="/data/archive/$DATE"
+
+mkdir -p $PROCESSED $ARCHIVE
+
+echo "Processing measurements for $DATE"
+
+# 1. Quality check
+echo "Validating files..."
+if ! magnetrun info validate $RAW_DATA/*.tdms $RAW_DATA/*.txt; then
+    echo "ERROR: File validation failed!"
+    exit 1
+fi
+
+# 2. Generate daily summary plots
+echo "Creating summary plots..."
+magnetrun plot overview $RAW_DATA/*.tdms --template standard --save --output-dir $PROCESSED/plots/
+
+# 3. Find interesting features
+echo "Analyzing for plateaus and breakpoints..."
+magnetrun stats analyze $RAW_DATA/*.* --plateau --detect-bkpts --save > $PROCESSED/analysis_summary.txt
+
+# 4. Process each housing type separately
+for housing in M8 M9 M10; do
+    echo "Processing $housing data..."
+    housing_files=$(ls $RAW_DATA/*$housing* 2>/dev/null || true)
+    if [[ -n "$housing_files" ]]; then
+        magnetrun add formula $housing_files --formula "Power = Field * Current" --save
+        magnetrun plot show $housing_files --keys Field Current Power --save --output-dir $PROCESSED/$housing/
+    fi
+done
+
+# 5. Export processed data
+echo "Exporting to CSV..."
+magnetrun select extract $RAW_DATA/*.* --convert
+mv *.csv $PROCESSED/
+
+# 6. Archive raw data
+echo "Archiving raw data..."
+cp $RAW_DATA/*.* $ARCHIVE/
+
+echo "Daily processing complete for $DATE"
+```
+
+#### Integration with Other Tools
+
+**With rsync for data synchronization:**
+```bash
+# Sync data from measurement computer and process
+rsync -av measurement-pc:/data/today/ ./raw_data/
+magnetrun info validate raw_data/*.* && magnetrun stats analyze raw_data/*.* --save
+```
+
+**With cron for automated processing:**
+```bash
+# Add to crontab: process measurements every hour
+0 * * * * cd /home/user/magnetrun && ./hourly_processing.sh >> processing.log 2>&1
+```
+
+**With database logging:**
+```bash
+# Extract key metrics and log to database
+magnetrun stats analyze *.tdms --plateau > stats.txt
+python parse_stats.py stats.txt | sqlite3 measurements.db ".import /dev/stdin daily_stats"
+```
+
+### CLI Tips & Tricks
+
+#### Useful Patterns
+```bash
+# Process only files modified today
+find . -name "*.tdms" -mtime -1 -exec magnetrun plot show {} --save \;
+
+# Process files by size (avoid very large files)
+find . -name "*.txt" -size -100M -exec magnetrun stats analyze {} --plateau \;
+
+# Create subdirectories for output
+magnetrun plot show *.tdms --save --output-dir $(date +%Y%m%d)/
+
+# Process with specific housing based on filename
+for file in *M9*.tdms; do magnetrun stats analyze "$file" --housing M9; done
+
+# Quick data exploration
+magnetrun info show *.* --list-keys | grep -E "(Field|Current|Power)"
+```
+
+#### Error Handling
+```bash
+# Process files with error logging
+for file in *.tdms; do
+    if magnetrun plot show "$file" --save 2>error.log; then
+        echo "✓ Processed $file"
+    else
+        echo "✗ Failed $file (see error.log)"
+    fi
+done
+
+# Skip problematic files and continue
+magnetrun plot show *.tdms --save || echo "Some files failed, continuing..."
+```
+
+#### Performance Optimization
+```bash
+# Process large datasets efficiently
+magnetrun select extract huge_file.tdms --output-timerange "0;100" --convert  # Extract subset first
+magnetrun plot show processed_subset.csv --save  # Then analyze subset
+
+# Use specific keys to reduce memory usage
+magnetrun plot show *.tdms --keys Field Current --save  # Only load needed data
+```
+
+## 🧪 Examples
+
+### Python API Examples
+
+#### Basic Analysis Pipeline
+```python
+from magnetrun import MagnetData, MagnetRun
+
+# Load and prepare data
+data = MagnetData.from_file('measurement.tdms')
+run = MagnetRun('M9', 'Lab1', data)
+run.prepare_data()
+
+# Add calculated fields
+data.add_data('Power', 'Power = Field * Current')
+data.add_data('FieldNormalized', 'FieldNormalized = Field / Field.max()')
+
+# Extract analysis data
+analysis_data = data.get_data(['Field', 'Current', 'Power'])
 
 # Statistical analysis
-magnetrun data.txt stats --keys Field --plateau --localmax --save
+print(f"Max power: {analysis_data['Power'].max():.2f}")
+print(f"Mean field: {analysis_data['Field'].mean():.3f}")
 
-# Generate plots
-magnetrun data.txt plot --keys Field Current --save --format pdf
+# Export results
+from magnetrun.io.writers import DataWriter
+DataWriter.to_csv(data, 'analysis_results.csv')
 ```
 
-### Command Chaining & Data Flow
+### Multi-File Processing
+```python
+from pathlib import Path
+from magnetrun import MagnetData
 
-MagnetRun supports powerful command chaining where data flows seamlessly between operations:
+results = []
+data_dir = Path('measurements/')
 
-#### 🔄 **Basic Data Flow Example**
+for file_path in data_dir.glob('*.tdms'):
+    try:
+        data = MagnetData.from_file(file_path)
+        
+        # Extract key metrics
+        if 'Field' in data.keys:
+            field_data = data.get_data(['Field'])
+            max_field = field_data['Field'].max()
+            results.append({
+                'file': file_path.name,
+                'max_field': max_field,
+                'format': data.format_type
+            })
+            
+    except Exception as e:
+        print(f"Error processing {file_path}: {e}")
 
+# Create summary
+import pandas as pd
+summary = pd.DataFrame(results)
+print(summary)
+```
+
+### Format Validation
+```python
+from magnetrun.io.format_detector import FormatDetector
+from pathlib import Path
+
+detector = FormatDetector()
+
+# Check multiple files
+files = ['data1.txt', 'data2.tdms', 'profile.txt']
+
+for file_path in files:
+    path = Path(file_path)
+    if path.exists():
+        format_type = detector.detect_format(path)
+        if format_type:
+            print(f"✓ {file_path}: {format_type} format")
+        else:
+            print(f"✗ {file_path}: Unknown format")
+    else:
+        print(f"? {file_path}: File not found")
+```
+
+## 🤝 Contributing
+
+Contributions are welcome! The extensible architecture makes it easy to add new features:
+
+### Adding New Formats
+1. Create a `Reader` class inheriting from `BaseReader`
+2. Create a `Data` class inheriting from `BaseData`  
+3. Register with `format_registry.register_format()`
+4. Add tests and documentation
+
+### Adding New Features
+1. Fork the repository
+2. Create a feature branch
+3. Add your improvements
+4. Add tests for new functionality
+5. Submit a pull request
+
+### Development Setup
 ```bash
-# Simple chain: info -> plot
-magnetrun experiment.txt info --list-keys plot --keys Field --save
-
-# Data flow:
-# experiment.txt → [info] → experiment.txt → [plot] → Field_plot.png
-```
-
-#### 🧹 **Data Cleaning Pipeline**
-
-```bash
-# Clean data, then analyze and plot
-magnetrun raw_data.txt clean stats --plateau plot --keys Field --save
-
-# Data flow:
-# raw_data.txt → [clean] → raw_data_cleaned.csv → [stats] → analysis_summary.csv
-#                      └── → [plot] → Field_plot.png
-```
-
-#### 📊 **Selection and Analysis Pipeline**
-
-```bash
-# Select time range, add calculations, analyze, and plot
-magnetrun magnet_run.txt \
-  select --output-timerange "20.0;100.0" \
-  add --formula "Power = Field * Current" \
-  stats --keys Field Power --plateau --detect-bkpts --save \
-  plot --keys Field Power --normalize --save
-
-# Data flow:
-# magnet_run.txt → [select] → magnet_run_from_20.0_to_100.0.csv
-#                           → [add] → magnet_run_with_Power.csv  
-#                                  → [stats] → analysis_summary.csv + breakpoint plots
-#                                          → [plot] → normalized plots
-```
-
-#### 🎯 **Complex Multi-File Workflow**
-
-```bash
-# Process multiple files with filtering and comparative analysis
-magnetrun experiment_*.txt \
-  --housing M9 \
-  --debug \
-  clean \
-  select --threshold-filter "Field:0.1" --output-key "Field;Current;Voltage" \
-  add --formula "Power = Current * Voltage" --formula "Efficiency = Power / Field" \
-  stats --keys Field Power Efficiency --plateau --localmax --output-summary \
-  plot --keys Field Power --key-vs-key "Field-Power" --style both --save --format pdf
-
-# Data flow for each file:
-# experiment_001.txt → [clean] → experiment_001_cleaned.csv
-#                              → [select] → experiment_001_filtered_Field_Current_Voltage.csv
-#                                       → [add] → experiment_001_with_Power_Efficiency.csv
-#                                              → [stats] → individual analysis + summary
-#                                                      → [plot] → multiple PDF plots
-```
-
-#### 🔬 **Advanced Scientific Workflow**
-
-```bash
-# Comprehensive analysis with custom parameters
-magnetrun high_field_test.tdms \
-  --housing M10 \
-  info --list-keys \
-  select --output-timerange "10.0;300.0" --threshold-filter "Tensions_Aimant/Interne_GR1:2.0" \
-  add --formula "B_normalized = Tensions_Aimant/Interne_GR1 / Tensions_Aimant/Interne_GR1.max()" \
-  stats --keys "Tensions_Aimant/Interne_GR1" B_normalized \
-        --plateau --detect-bkpts --localmax \
-        --threshold 1e-4 --window 20 --level 95 \
-        --save --show --output-summary \
-  plot --keys "Tensions_Aimant/Interne_GR1" B_normalized \
-       --key-vs-key "Tensions_Aimant/Interne_GR1-Courants_Alimentations/Référence_GR1" \
-       --style both --normalize --figsize "16,12" \
-       --save --format pdf --dpi 600 --output-dir ./publication_plots/
-
-# Data flow:
-# high_field_test.tdms → [info] → key listing
-#                     → [select] → filtered TDMS data → high_field_test_filtered.csv
-#                                                    → [add] → high_field_test_with_B_normalized.csv
-#                                                           → [stats] → comprehensive analysis
-#                                                                   → [plot] → publication-quality plots
-```
-
-#### 🏭 **Pre-built Workflows**
-
-```bash
-# Basic workflow: clean -> stats -> plot
-magnetrun data.txt workflow-basic --keys Field Current --save-all
-
-# Advanced workflow with custom parameters
-magnetrun data.txt workflow-advanced \
-  --time-range "20.0;80.0" \
-  --field-threshold 0.2
-
-# Custom batch processing
-for file in experiment_*.txt; do
-  magnetrun "$file" \
-    clean \
-    select --threshold-filter "Field:0.05" \
-    add --formula "PowerDensity = Power / Volume" \
-    stats --plateau --save \
-    plot --keys Field PowerDensity --save --output-dir "./results/$(basename "$file" .txt)/"
-done
-```
-
-### 📁 **Data Flow Visualization**
-
-```
-Input Files                 Intermediate Files              Output Files
------------                 ------------------              ------------
-
-magnet_run.txt       ┌─►    magnet_run_cleaned.csv    ┌─►   analysis_summary.csv
-experiment.tdms      │   ┌─► magnet_run_filtered.csv   │     Field_vs_time.png
-field_test.csv       │   │   magnet_run_with_Power.csv │     Power_histogram.pdf
-                     │   │                             │     breakpoints_plot.png
-                     │   │                             │
-                   [clean] │                         [stats]
-                     │   │                             │
-                     │ [select]                        │
-                     │   │                             │
-                     │ [add]                         [plot]
-                     │   │                             │
-                     └───┴─────────────────────────────┘
-```
-
-### 🎛️ **Advanced Options**
-
-#### **Grouped Plot Options**
-```bash
-magnetrun data.txt plot \
-  --keys Field Current \           # Plot Options
-  --x-key time \                   
-  --key-vs-key "Field-Current" \   
-  --normalize \                    
-  --style both \                   
-  \
-  --save \                         # Output Options  
-  --format pdf \                   
-  --dpi 600 \                      
-  --output-dir ./plots/ \          
-  \
-  --figsize "14,10" \             # Appearance Options
-  --title "Magnetic Field Analysis" \
-  --grid \                         
-  --legend
-```
-
-#### **Statistical Analysis Options**
-```bash
-magnetrun data.txt stats \
-  --keys Field Current \           # Analysis Options
-  --detect-bkpts \                 
-  --plateau \                      
-  --localmax \                     
-  \
-  --threshold 1e-4 \              # Parameters
-  --window 15 \                    
-  --level 95 \                     
-  \
-  --save \                        # Output Options
-  --show \                         
-  --output-summary
-```
-
-### 📋 **Command Reference**
-
-#### **Core Commands**
-- **`info`** - Display file information and convert formats
-- **`select`** - Extract data subsets (time ranges, key filtering, thresholds)
-- **`add`** - Add calculated columns with formulas
-- **`clean`** - Remove duplicates and empty columns
-- **`stats`** - Statistical analysis (plateaus, peaks, breakpoints)
-- **`plot`** - Generate plots with extensive customization
-- **`workflow-basic`** - Pre-built basic analysis pipeline
-- **`workflow-advanced`** - Pre-built advanced analysis pipeline
-
-#### **Data Selection Examples**
-```bash
-# Extract specific time range
-magnetrun data.txt select --output-timerange "10.0;100.0"
-
-# Filter by field strength
-magnetrun data.txt select --threshold-filter "Field:0.1"
-
-# Extract specific measurements
-magnetrun data.txt select --output-key "Field;Current;Voltage"
-
-# Extract measurement pairs for correlation analysis
-magnetrun data.txt select --extract-pairkeys "Field-Current;Voltage-Power"
-```
-
-#### **Formula Examples**
-```bash
-# Simple calculations
-magnetrun data.txt add --formula "Power = Voltage * Current"
-
-# Complex expressions
-magnetrun data.txt add --formula "Efficiency = (Power_out / Power_in) * 100"
-
-# Normalized fields
-magnetrun data.txt add --formula "Field_norm = Field / Field.max()"
-
-# Multiple formulas in pipeline
-magnetrun data.txt \
-  add --formula "Power = V * I" \
-  add --formula "PowerDensity = Power / Volume" \
-  add --formula "Efficiency = PowerDensity / Field"
-```
-
-### 🎯 **Real-World Use Cases**
-
-#### **Quality Control Analysis**
-```bash
-# Analyze magnet performance across multiple tests
-magnetrun quality_test_*.txt \
-  --housing M9 \
-  clean \
-  select --threshold-filter "Field:0.05" \
-  stats --keys Field --plateau --detect-bkpts --output-summary \
-  plot --keys Field --save --output-dir ./quality_reports/
-
-# Generates:
-# - quality_reports/analysis_summary.csv (performance metrics)
-# - quality_reports/*_Field_plot.png (individual plots)
-# - quality_reports/*_breakpoints.png (stability analysis)
-```
-
-#### **Comparative Performance Study**
-```bash
-# Compare different magnet configurations
-magnetrun M8_test.txt M9_test.txt M10_test.txt \
-  select --output-timerange "30.0;200.0" \
-  add --formula "PowerEfficiency = Power / Field" \
-  stats --keys Field PowerEfficiency --plateau --localmax --output-summary \
-  plot --keys Field PowerEfficiency --normalize --save --format pdf
-
-# Output: Normalized comparison plots + statistical summary
-```
-
-#### **Long-term Stability Analysis**
-```bash
-# Analyze field stability over extended periods
-magnetrun longterm_*.tdms \
-  --housing M10 \
-  select --output-timerange "0.0;3600.0" \
-  add --formula "FieldStability = abs(Field - Field.mean())" \
-  stats --keys Field FieldStability \
-        --plateau --detect-bkpts \
-        --threshold 1e-5 --window 50 \
-        --save --output-summary \
-  plot --keys Field FieldStability \
-       --figsize "20,12" --save --format pdf
-```
-
-#### **Publication-Quality Analysis**
-```bash
-# Generate publication-ready plots and analysis
-magnetrun experiment_final.txt \
-  --housing M9 \
-  clean \
-  select --threshold-filter "Field:0.1" --output-timerange "10.0;300.0" \
-  add --formula "B_normalized = Field / 2.1" \
-  stats --keys Field B_normalized \
-        --plateau --detect-bkpts --localmax \
-        --save --output-summary \
-  plot --keys Field B_normalized \
-       --key-vs-key "Field-Current" \
-       --style both --normalize \
-       --figsize "12,8" --format pdf --dpi 600 \
-       --title "Magnetic Field Characterization" \
-       --output-dir ./publication/
-
-# Generates publication-ready:
-# - High-resolution PDF plots
-# - Statistical analysis summary
-# - Breakpoint detection plots
-```
-
-## Supported Housing Types
-
-- **M8**: Housing configuration for M8 magnets
-- **M9**: Housing configuration for M9 magnets  
-- **M10**: Housing configuration for M10 magnets
-
-Each housing type has specific current reference calculations and field mappings.
-
-## Data Formats
-
-### TDMS Files
-- Supports National Instruments TDMS format
-- Handles grouped data structure  
-- Automatic time offset correction for downsampled data
-- Cross-group formula support
-
-### Text Files  
-- Space-separated values
-- Automatic header detection
-- Configurable data preparation based on housing type
-
-### CSV Files
-- Comma-separated values
-- Standard pandas CSV reading
-- Full support in command chaining
-
-## Development
-
-### Running Tests
-
-```bash
+git clone https://github.com/yourorg/magnetrun.git
+cd magnetrun
+pip install -e ".[dev]"
 pytest tests/
 ```
 
-### Code Formatting
+## 📄 License
 
-```bash
-black magnetrun/
-flake8 magnetrun/
-```
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-### Type Checking
+## 🙏 Acknowledgments
 
-```bash
-mypy magnetrun/
-```
+- Built with [Pint](https://pint.readthedocs.io/) for unit management
+- TDMS file support via [npTDMS](https://nptdms.readthedocs.io/)
+- Data manipulation with [Pandas](https://pandas.pydata.org/)
 
-## License
+## 📞 Support
 
-MIT License - see LICENSE file for details.
+- **Documentation**: Coming soon
+- **Issues**: [GitHub Issues](https://github.com/yourorg/magnetrun/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/yourorg/magnetrun/discussions)
 
-## Contributing
+---
 
-1. Fork the repository
-2. Create a feature branch
-3. Add tests for new functionality
-4. Ensure all tests pass
-5. Submit a pull request
-
-## Changelog
-
-### Version 1.0.0
-- Initial restructured release
-- Modular architecture with composition pattern
-- Command chaining and data flow capabilities
-- Grouped CLI options for better UX
-- Comprehensive test coverage
-- CLI interface with Click
-- Improved error handling and validation
-- Type hints throughout
-- Pre-built workflow commands
-- Publication-quality plotting options
-
-### Key Improvements Over Original
-- **90% reduction** in file size complexity
-- **Type safety** with comprehensive type hints
-- **Professional CLI** with grouped options and chaining
-- **Error handling** with custom exception hierarchy
-- **Testable** architecture with comprehensive test suite
-- **Configurable** housing support without code changes
-- **Extensible** modular design for new features
-- **Data flow** capabilities for complex analysis pipelines
+*MagnetRun: Making magnetic measurement analysis simple, powerful, and extensible.*

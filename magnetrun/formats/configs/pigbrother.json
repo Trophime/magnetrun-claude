@@ -1,0 +1,544 @@
+{
+  "format_name": "pigbrother",
+  "metadata": {
+    "description": "PigBrother TDMS data acquisition format",
+    "file_extension": ".tdms",
+    "format_type": "binary",
+    "structure": "groups/channels",
+    "measurement_type": "real_time_acquisition"
+  },
+  "fields": [
+    {
+      "name": "Courants_Alimentations/Courant_A1",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_A1",
+      "description": "Power supply A1 current"
+    },
+    {
+      "name": "Courants_Alimentations/Courant_A2",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_A2",
+      "description": "Power supply A2 current"
+    },
+    {
+      "name": "Courants_Alimentations/Courant_A3",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_A3",
+      "description": "Power supply A3 current"
+    },
+    {
+      "name": "Courants_Alimentations/Courant_A4",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_A4",
+      "description": "Power supply A4 current"
+    },
+    {
+      "name": "Courants_Alimentations/R\u00e9f\u00e9rence_A1",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_ref_A1",
+      "description": "Power supply A1 current reference"
+    },
+    {
+      "name": "Courants_Alimentations/R\u00e9f\u00e9rence_A2",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_ref_A2",
+      "description": "Power supply A2 current reference"
+    },
+    {
+      "name": "Courants_Alimentations/R\u00e9f\u00e9rence_A3",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_ref_A3",
+      "description": "Power supply A3 current reference"
+    },
+    {
+      "name": "Courants_Alimentations/R\u00e9f\u00e9rence_A4",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_ref_A4",
+      "description": "Power supply A4 current reference"
+    },
+    {
+      "name": "Courants_Alimentations/Courant_GR1",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_GR1",
+      "description": "Group 1 current (A1+A2)"
+    },
+    {
+      "name": "Courants_Alimentations/Courant_GR2",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_GR2",
+      "description": "Group 2 current (A3+A4)"
+    },
+    {
+      "name": "Courants_Alimentations/Champ_magn",
+      "field_type": "magnetic_field",
+      "unit": "millitesla",
+      "symbol": "B",
+      "description": "Magnetic field"
+    },
+    {
+      "name": "Tensions_Alimentations/Tension_A1",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_A1",
+      "description": "Power supply A1 voltage"
+    },
+    {
+      "name": "Tensions_Alimentations/Tension_A2",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_A2",
+      "description": "Power supply A2 voltage"
+    },
+    {
+      "name": "Tensions_Alimentations/Tension_A3",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_A3",
+      "description": "Power supply A3 voltage"
+    },
+    {
+      "name": "Tensions_Alimentations/Tension_A4",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_A4",
+      "description": "Power supply A4 voltage"
+    },
+    {
+      "name": "Tensions_Aimant/Interne12",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_int12",
+      "description": "Internal voltage 1-2"
+    },
+    {
+      "name": "Tensions_Aimant/Interne3",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_int3",
+      "description": "Internal voltage 3"
+    },
+    {
+      "name": "Tensions_Aimant/Interne4",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_int4",
+      "description": "Internal voltage 4"
+    },
+    {
+      "name": "Tensions_Aimant/Interne5",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_int5",
+      "description": "Internal voltage 5"
+    },
+    {
+      "name": "Tensions_Aimant/Interne6",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_int6",
+      "description": "Internal voltage 6"
+    },
+    {
+      "name": "Tensions_Aimant/Interne7",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_int7",
+      "description": "Internal voltage 7"
+    },
+    {
+      "name": "Tensions_Aimant/Externe1",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_ext1",
+      "description": "External voltage 1"
+    },
+    {
+      "name": "Tensions_Aimant/Externe2",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_ext2",
+      "description": "External voltage 2"
+    },
+    {
+      "name": "Tensions_Aimant/ALL_internes",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_int_all",
+      "description": "All internal voltages"
+    },
+    {
+      "name": "Tensions_Aimant/ALL_externes",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_ext_all",
+      "description": "All external voltages"
+    },
+    {
+      "name": "Tensions_MC1/Tension_P_A1",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_P_A1",
+      "description": "Positive voltage A1"
+    },
+    {
+      "name": "Tensions_MC1/Tension_P_A2",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_P_A2",
+      "description": "Positive voltage A2"
+    },
+    {
+      "name": "Tensions_MC1/Tension_N_A1",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_N_A1",
+      "description": "Negative voltage A1"
+    },
+    {
+      "name": "Tensions_MC1/Tension_N_A2",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_N_A2",
+      "description": "Negative voltage A2"
+    },
+    {
+      "name": "Tensions_MC2/Tension_P_A3",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_P_A3",
+      "description": "Positive voltage A3"
+    },
+    {
+      "name": "Tensions_MC2/Tension_P_A4",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_P_A4",
+      "description": "Positive voltage A4"
+    },
+    {
+      "name": "Tensions_MC2/Tension_N_A3",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_N_A3",
+      "description": "Negative voltage A3"
+    },
+    {
+      "name": "Tensions_MC2/Tension_N_A4",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_N_A4",
+      "description": "Negative voltage A4"
+    },
+    {
+      "name": "HT_Courant/HT1_RC",
+      "field_type": "current",
+      "unit": "volt",
+      "symbol": "I_HT1_R",
+      "description": "HT1 R phase current"
+    },
+    {
+      "name": "HT_Courant/HT1_SC",
+      "field_type": "current",
+      "unit": "volt",
+      "symbol": "I_HT1_S",
+      "description": "HT1 S phase current"
+    },
+    {
+      "name": "HT_Courant/HT1_TC",
+      "field_type": "current",
+      "unit": "volt",
+      "symbol": "I_HT1_T",
+      "description": "HT1 T phase current"
+    },
+    {
+      "name": "HT_Courant/HT2_RC",
+      "field_type": "current",
+      "unit": "volt",
+      "symbol": "I_HT2_R",
+      "description": "HT2 R phase current"
+    },
+    {
+      "name": "HT_Courant/HT2_SC",
+      "field_type": "current",
+      "unit": "volt",
+      "symbol": "I_HT2_S",
+      "description": "HT2 S phase current"
+    },
+    {
+      "name": "HT_Courant/HT2_TC",
+      "field_type": "current",
+      "unit": "volt",
+      "symbol": "I_HT2_T",
+      "description": "HT2 T phase current"
+    },
+    {
+      "name": "Haute_Tension/HT1_R",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_HT1_R",
+      "description": "HT1 R phase voltage"
+    },
+    {
+      "name": "Haute_Tension/HT1_S",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_HT1_S",
+      "description": "HT1 S phase voltage"
+    },
+    {
+      "name": "Haute_Tension/HT1_T",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_HT1_T",
+      "description": "HT1 T phase voltage"
+    },
+    {
+      "name": "Haute_Tension/HT2_R",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_HT2_R",
+      "description": "HT2 R phase voltage"
+    },
+    {
+      "name": "Haute_Tension/HT2_S",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_HT2_S",
+      "description": "HT2 S phase voltage"
+    },
+    {
+      "name": "Haute_Tension/HT2_T",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_HT2_T",
+      "description": "HT2 T phase voltage"
+    },
+    {
+      "name": "Courants_ponts/A1_p1",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_A1_p1",
+      "description": "Power supply A1 phase p1 current"
+    },
+    {
+      "name": "Courants_ponts/A1_p2",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_A1_p2",
+      "description": "Power supply A1 phase p2 current"
+    },
+    {
+      "name": "Courants_ponts/A1_p3",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_A1_p3",
+      "description": "Power supply A1 phase p3 current"
+    },
+    {
+      "name": "Courants_ponts/A1_p4",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_A1_p4",
+      "description": "Power supply A1 phase p4 current"
+    },
+    {
+      "name": "Courants_ponts/A2_p1",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_A2_p1",
+      "description": "Power supply A2 phase p1 current"
+    },
+    {
+      "name": "Courants_ponts/A2_p2",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_A2_p2",
+      "description": "Power supply A2 phase p2 current"
+    },
+    {
+      "name": "Courants_ponts/A2_p3",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_A2_p3",
+      "description": "Power supply A2 phase p3 current"
+    },
+    {
+      "name": "Courants_ponts/A2_p4",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_A2_p4",
+      "description": "Power supply A2 phase p4 current"
+    },
+    {
+      "name": "Courants_ponts/A3_p1",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_A3_p1",
+      "description": "Power supply A3 phase p1 current"
+    },
+    {
+      "name": "Courants_ponts/A3_p2",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_A3_p2",
+      "description": "Power supply A3 phase p2 current"
+    },
+    {
+      "name": "Courants_ponts/A3_p3",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_A3_p3",
+      "description": "Power supply A3 phase p3 current"
+    },
+    {
+      "name": "Courants_ponts/A3_p4",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_A3_p4",
+      "description": "Power supply A3 phase p4 current"
+    },
+    {
+      "name": "Courants_ponts/A4_p1",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_A4_p1",
+      "description": "Power supply A4 phase p1 current"
+    },
+    {
+      "name": "Courants_ponts/A4_p2",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_A4_p2",
+      "description": "Power supply A4 phase p2 current"
+    },
+    {
+      "name": "Courants_ponts/A4_p3",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_A4_p3",
+      "description": "Power supply A4 phase p3 current"
+    },
+    {
+      "name": "Courants_ponts/A4_p4",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_A4_p4",
+      "description": "Power supply A4 phase p4 current"
+    },
+    {
+      "name": "Courants_ponts/Courant_A1_ponts",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_A1_total",
+      "description": "Total A1 bridge current"
+    },
+    {
+      "name": "Courants_ponts/Courant_A2_ponts",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_A2_total",
+      "description": "Total A2 bridge current"
+    },
+    {
+      "name": "Courants_ponts/Courant_A3_ponts",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_A3_total",
+      "description": "Total A3 bridge current"
+    },
+    {
+      "name": "Courants_ponts/Courant_A4_ponts",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_A4_total",
+      "description": "Total A4 bridge current"
+    },
+    {
+      "name": "Puissances/Puissance_A1",
+      "field_type": "power",
+      "unit": "watt",
+      "symbol": "P_A1",
+      "description": "Power supply A1 power"
+    },
+    {
+      "name": "Puissances/Puissance_A2",
+      "field_type": "power",
+      "unit": "watt",
+      "symbol": "P_A2",
+      "description": "Power supply A2 power"
+    },
+    {
+      "name": "Puissances/Puissance_A3",
+      "field_type": "power",
+      "unit": "watt",
+      "symbol": "P_A3",
+      "description": "Power supply A3 power"
+    },
+    {
+      "name": "Puissances/Puissance_A4",
+      "field_type": "power",
+      "unit": "watt",
+      "symbol": "P_A4",
+      "description": "Power supply A4 power"
+    },
+    {
+      "name": "Puissances/Puissance_Alims",
+      "field_type": "power",
+      "unit": "watt",
+      "symbol": "P_total",
+      "description": "Total power supplies power"
+    },
+    {
+      "name": "Infos/Duration",
+      "field_type": "time",
+      "unit": "second",
+      "symbol": "t_duration",
+      "description": "Measurement duration"
+    },
+    {
+      "name": "Infos/Start",
+      "field_type": "time",
+      "unit": "second",
+      "symbol": "t_start",
+      "description": "Measurement start time"
+    },
+    {
+      "name": "Infos/End",
+      "field_type": "time",
+      "unit": "second",
+      "symbol": "t_end",
+      "description": "Measurement end time"
+    },
+    {
+      "name": "Infos/Energy",
+      "field_type": "power",
+      "unit": "megawatt*hour",
+      "symbol": "E_total",
+      "description": "Total energy consumed"
+    },
+    {
+      "name": "Infos/Pmax",
+      "field_type": "power",
+      "unit": "megawatt",
+      "symbol": "P_max",
+      "description": "Maximum power"
+    },
+    {
+      "name": "Infos/Bmax",
+      "field_type": "magnetic_field",
+      "unit": "tesla",
+      "symbol": "B_max",
+      "description": "Maximum magnetic field"
+    }
+  ]
+}

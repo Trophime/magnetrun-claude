@@ -1,0 +1,47 @@
+{
+  "format_name": "bprofile",
+  "metadata": {
+    "description": "Magnetic field profile measurement data",
+    "file_extension": ".txt",
+    "delimiter": ",",
+    "header_row": true,
+    "measurement_type": "field_mapping"
+  },
+  "fields": [
+    {
+      "name": "Index",
+      "field_type": "index",
+      "unit": "dimensionless",
+      "symbol": "idx",
+      "description": "Sample index"
+    },
+    {
+      "name": "Position (mm)",
+      "field_type": "index",
+      "unit": "millimeter",
+      "symbol": "x",
+      "description": "Position along measurement axis"
+    },
+    {
+      "name": "Raw (V.s)",
+      "field_type": "voltage",
+      "unit": "volt*second",
+      "symbol": "V_raw",
+      "description": "Raw voltage-time measurement"
+    },
+    {
+      "name": "Integrated (V.s.mm)",
+      "field_type": "voltage",
+      "unit": "volt*second*millimeter",
+      "symbol": "V_int",
+      "description": "Integrated voltage measurement"
+    },
+    {
+      "name": "Profil (%)",
+      "field_type": "percentage",
+      "unit": "percent",
+      "symbol": "B_prof",
+      "description": "Magnetic field profile as percentage"
+    }
+  ]
+}

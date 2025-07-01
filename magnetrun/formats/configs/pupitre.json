@@ -1,0 +1,641 @@
+{
+  "format_name": "pupitre",
+  "metadata": {
+    "description": "Pupitre control system data format",
+    "file_extension": ".txt",
+    "delimiter": "\t",
+    "header_row": true
+  },
+  "fields": [
+    {
+      "name": "Date",
+      "field_type": "time",
+      "unit": "dimensionless",
+      "symbol": "Date",
+      "description": "Date of measurement"
+    },
+    {
+      "name": "Time",
+      "field_type": "time",
+      "unit": "dimensionless",
+      "symbol": "Time",
+      "description": "Time of measurement"
+    },
+    {
+      "name": "Field",
+      "field_type": "magnetic_field",
+      "unit": "tesla",
+      "symbol": "B_res",
+      "description": "Resistive magnet field"
+    },
+    {
+      "name": "SupraField",
+      "field_type": "magnetic_field",
+      "unit": "tesla",
+      "symbol": "B_sc",
+      "description": "Superconducting magnet field"
+    },
+    {
+      "name": "TotalField",
+      "field_type": "magnetic_field",
+      "unit": "tesla",
+      "symbol": "B_tot",
+      "description": "Total magnetic field"
+    },
+    {
+      "name": "Tin1",
+      "field_type": "temperature",
+      "unit": "celsius",
+      "symbol": "T_in1",
+      "description": "Inlet temperature GR1"
+    },
+    {
+      "name": "Tin2",
+      "field_type": "temperature",
+      "unit": "celsius",
+      "symbol": "T_in2",
+      "description": "Inlet temperature GR2"
+    },
+    {
+      "name": "Tout",
+      "field_type": "temperature",
+      "unit": "celsius",
+      "symbol": "T_out",
+      "description": "Outlet temperature"
+    },
+    {
+      "name": "TAlimout",
+      "field_type": "temperature",
+      "unit": "celsius",
+      "symbol": "T_ps",
+      "description": "Power supply outlet temperature"
+    },
+    {
+      "name": "teb",
+      "field_type": "temperature",
+      "unit": "celsius",
+      "symbol": "T_drac",
+      "description": "Drac temperature"
+    },
+    {
+      "name": "tsb",
+      "field_type": "temperature",
+      "unit": "celsius",
+      "symbol": "T_isere",
+      "description": "output temperature of water rejected into Is\u00e8re river"
+    },
+    {
+      "name": "HP1",
+      "field_type": "pressure",
+      "unit": "bar",
+      "symbol": "P_H1",
+      "description": "High pressure GR1"
+    },
+    {
+      "name": "HP2",
+      "field_type": "pressure",
+      "unit": "bar",
+      "symbol": "P_H2",
+      "description": "High pressure GR2"
+    },
+    {
+      "name": "BP",
+      "field_type": "pressure",
+      "unit": "bar",
+      "symbol": "P_L",
+      "description": "Low pressure"
+    },
+    {
+      "name": "Flow1",
+      "field_type": "flow_rate",
+      "unit": "liter/minute",
+      "symbol": "Q_1",
+      "description": "Flow rate GR1"
+    },
+    {
+      "name": "Flow2",
+      "field_type": "flow_rate",
+      "unit": "liter/minute",
+      "symbol": "Q_2",
+      "description": "Flow rate GR2"
+    },
+    {
+      "name": "debitbrut",
+      "field_type": "flow_rate",
+      "unit": "meter**3/hour",
+      "symbol": "Q_raw",
+      "description": "Raw flow rate"
+    },
+    {
+      "name": "Rpm1",
+      "field_type": "rotation_speed",
+      "unit": "rpm",
+      "symbol": "rpm_1",
+      "description": "Rotation speed GR1"
+    },
+    {
+      "name": "Rpm2",
+      "field_type": "rotation_speed",
+      "unit": "rpm",
+      "symbol": "rmp_2",
+      "description": "Rotation speed GR2"
+    },
+    {
+      "name": "Idcct1",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_A1",
+      "description": "DC current A1"
+    },
+    {
+      "name": "Idcct2",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_A2",
+      "description": "DC current A2"
+    },
+    {
+      "name": "Idcct3",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_A3",
+      "description": "DC current A3"
+    },
+    {
+      "name": "Idcct4",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_A4",
+      "description": "DC current A4"
+    },
+    {
+      "name": "Icoil1",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_H1",
+      "description": "Coil 1 current (Insert)"
+    },
+    {
+      "name": "Ucoil1",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_H1",
+      "description": "Coil 1 voltage (Insert)"
+    },
+    {
+      "name": "DRcoil1",
+      "field_type": "percentage",
+      "unit": "percent",
+      "symbol": "R_H1",
+      "description": "Coil 1 deviation from reference resistance (Insert)"
+    },
+    {
+      "name": "Tcal1",
+      "field_type": "temperature",
+      "unit": "celsius",
+      "symbol": "T_H1",
+      "description": "Coil 1 temperature (Insert)"
+    },
+    {
+      "name": "Icoil2",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_H2",
+      "description": "Coil 2 current (Insert)"
+    },
+    {
+      "name": "Ucoil2",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_H2",
+      "description": "Coil 2 voltage (Insert)"
+    },
+    {
+      "name": "DRcoil2",
+      "field_type": "percentage",
+      "unit": "percent",
+      "symbol": "R_H2",
+      "description": "Coil 2 deviation from reference resistance (Insert)"
+    },
+    {
+      "name": "Tcal2",
+      "field_type": "temperature",
+      "unit": "celsius",
+      "symbol": "T_H2",
+      "description": "Coil 2 temperature (Insert)"
+    },
+    {
+      "name": "Icoil3",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_H3",
+      "description": "Coil 3 current (Insert)"
+    },
+    {
+      "name": "Ucoil3",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_H3",
+      "description": "Coil 3 voltage (Insert)"
+    },
+    {
+      "name": "DRcoil3",
+      "field_type": "percentage",
+      "unit": "percent",
+      "symbol": "R_H3",
+      "description": "Coil 3 deviation from reference resistance (Insert)"
+    },
+    {
+      "name": "Tcal3",
+      "field_type": "temperature",
+      "unit": "celsius",
+      "symbol": "T_H3",
+      "description": "Coil 3 temperature (Insert)"
+    },
+    {
+      "name": "Icoil4",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_H4",
+      "description": "Coil 4 current (Insert)"
+    },
+    {
+      "name": "Ucoil4",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_H4",
+      "description": "Coil 4 voltage (Insert)"
+    },
+    {
+      "name": "DRcoil4",
+      "field_type": "percentage",
+      "unit": "percent",
+      "symbol": "R_H4",
+      "description": "Coil 4 deviation from reference resistance (Insert)"
+    },
+    {
+      "name": "Tcal4",
+      "field_type": "temperature",
+      "unit": "celsius",
+      "symbol": "T_H4",
+      "description": "Coil 4 temperature (Insert)"
+    },
+    {
+      "name": "Icoil5",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_H5",
+      "description": "Coil 5 current (Insert)"
+    },
+    {
+      "name": "Ucoil5",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_H5",
+      "description": "Coil 5 voltage (Insert)"
+    },
+    {
+      "name": "DRcoil5",
+      "field_type": "percentage",
+      "unit": "percent",
+      "symbol": "R_H5",
+      "description": "Coil 5 deviation from reference resistance (Insert)"
+    },
+    {
+      "name": "Tcal5",
+      "field_type": "temperature",
+      "unit": "celsius",
+      "symbol": "T_H5",
+      "description": "Coil 5 temperature (Insert)"
+    },
+    {
+      "name": "Icoil6",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_H6",
+      "description": "Coil 6 current (Insert)"
+    },
+    {
+      "name": "Ucoil6",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_H6",
+      "description": "Coil 6 voltage (Insert)"
+    },
+    {
+      "name": "DRcoil6",
+      "field_type": "percentage",
+      "unit": "percent",
+      "symbol": "R_H6",
+      "description": "Coil 6 deviation from reference resistance (Insert)"
+    },
+    {
+      "name": "Tcal6",
+      "field_type": "temperature",
+      "unit": "celsius",
+      "symbol": "T_H6",
+      "description": "Coil 6 temperature (Insert)"
+    },
+    {
+      "name": "Icoil7",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_H7",
+      "description": "Coil 7 current (Insert)"
+    },
+    {
+      "name": "Ucoil7",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_H7",
+      "description": "Coil 7 voltage (Insert)"
+    },
+    {
+      "name": "DRcoil7",
+      "field_type": "percentage",
+      "unit": "percent",
+      "symbol": "R_H7",
+      "description": "Coil 7 deviation from reference resistance (Insert)"
+    },
+    {
+      "name": "Tcal7",
+      "field_type": "temperature",
+      "unit": "celsius",
+      "symbol": "T_H7",
+      "description": "Coil 7 temperature (Insert)"
+    },
+    {
+      "name": "Icoil8",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_H8",
+      "description": "Coil 8 current (Insert)"
+    },
+    {
+      "name": "Ucoil8",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_H8",
+      "description": "Coil 8 voltage (Insert)"
+    },
+    {
+      "name": "DRcoil8",
+      "field_type": "percentage",
+      "unit": "percent",
+      "symbol": "R_H8",
+      "description": "Coil 8 deviation from reference resistance (Insert)"
+    },
+    {
+      "name": "Tcal8",
+      "field_type": "temperature",
+      "unit": "celsius",
+      "symbol": "T_H8",
+      "description": "Coil 8 temperature (Insert)"
+    },
+    {
+      "name": "Icoil9",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_H9",
+      "description": "Coil 9 current (Insert)"
+    },
+    {
+      "name": "Ucoil9",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_H9",
+      "description": "Coil 9 voltage (Insert)"
+    },
+    {
+      "name": "DRcoil9",
+      "field_type": "percentage",
+      "unit": "percent",
+      "symbol": "R_H9",
+      "description": "Coil 9 deviation from reference resistance (Insert)"
+    },
+    {
+      "name": "Tcal9",
+      "field_type": "temperature",
+      "unit": "celsius",
+      "symbol": "T_H9",
+      "description": "Coil 9 temperature (Insert)"
+    },
+    {
+      "name": "Icoil10",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_H10",
+      "description": "Coil 10 current (Insert)"
+    },
+    {
+      "name": "Ucoil10",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_H10",
+      "description": "Coil 10 voltage (Insert)"
+    },
+    {
+      "name": "DRcoil10",
+      "field_type": "percentage",
+      "unit": "percent",
+      "symbol": "R_H10",
+      "description": "Coil 10 deviation from reference resistance (Insert)"
+    },
+    {
+      "name": "Tcal10",
+      "field_type": "temperature",
+      "unit": "celsius",
+      "symbol": "T_H10",
+      "description": "Coil 10 temperature (Insert)"
+    },
+    {
+      "name": "Icoil11",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_H11",
+      "description": "Coil 11 current (Insert)"
+    },
+    {
+      "name": "Ucoil11",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_H11",
+      "description": "Coil 11 voltage (Insert)"
+    },
+    {
+      "name": "DRcoil11",
+      "field_type": "percentage",
+      "unit": "percent",
+      "symbol": "R_H11",
+      "description": "Coil 11 deviation from reference resistance (Insert)"
+    },
+    {
+      "name": "Tcal11",
+      "field_type": "temperature",
+      "unit": "celsius",
+      "symbol": "T_H11",
+      "description": "Coil 11 temperature (Insert)"
+    },
+    {
+      "name": "Icoil12",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_H12",
+      "description": "Coil 12 current (Insert)"
+    },
+    {
+      "name": "Ucoil12",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_H12",
+      "description": "Coil 12 voltage (Insert)"
+    },
+    {
+      "name": "DRcoil12",
+      "field_type": "percentage",
+      "unit": "percent",
+      "symbol": "R_H12",
+      "description": "Coil 12 deviation from reference resistance (Insert)"
+    },
+    {
+      "name": "Tcal12",
+      "field_type": "temperature",
+      "unit": "celsius",
+      "symbol": "T_H12",
+      "description": "Coil 12 temperature (Insert)"
+    },
+    {
+      "name": "Icoil13",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_H13",
+      "description": "Coil 13 current (Insert)"
+    },
+    {
+      "name": "Ucoil13",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_H13",
+      "description": "Coil 13 voltage (Insert)"
+    },
+    {
+      "name": "DRcoil13",
+      "field_type": "percentage",
+      "unit": "percent",
+      "symbol": "R_H13",
+      "description": "Coil 13 deviation from reference resistance (Insert)"
+    },
+    {
+      "name": "Tcal13",
+      "field_type": "temperature",
+      "unit": "celsius",
+      "symbol": "T_H13",
+      "description": "Coil 13 temperature (Insert)"
+    },
+    {
+      "name": "Icoil14",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_H14",
+      "description": "Coil 14 current (Insert)"
+    },
+    {
+      "name": "Ucoil14",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_H14",
+      "description": "Coil 14 voltage (Insert)"
+    },
+    {
+      "name": "DRcoil14",
+      "field_type": "percentage",
+      "unit": "percent",
+      "symbol": "R_H14",
+      "description": "Coil 14 deviation from reference resistance (Insert)"
+    },
+    {
+      "name": "Tcal14",
+      "field_type": "temperature",
+      "unit": "celsius",
+      "symbol": "T_H14",
+      "description": "Coil 14 temperature (Insert)"
+    },
+    {
+      "name": "Icoil15",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_B15",
+      "description": "Coil 15 current (Bitters)"
+    },
+    {
+      "name": "Ucoil15",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_B15",
+      "description": "Coil 15 voltage (Bitters)"
+    },
+    {
+      "name": "DRcoil15",
+      "field_type": "percentage",
+      "unit": "percent",
+      "symbol": "R_B15",
+      "description": "Coil 15 deviation from reference resistance (Bitters)"
+    },
+    {
+      "name": "Tcal15",
+      "field_type": "temperature",
+      "unit": "celsius",
+      "symbol": "T_B15",
+      "description": "Coil 15 temperature (Bitters)"
+    },
+    {
+      "name": "Icoil16",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I_B16",
+      "description": "Coil 16 current (Bitters)"
+    },
+    {
+      "name": "Ucoil16",
+      "field_type": "voltage",
+      "unit": "volt",
+      "symbol": "U_B16",
+      "description": "Coil 16 voltage (Bitters)"
+    },
+    {
+      "name": "DRcoil16",
+      "field_type": "percentage",
+      "unit": "percent",
+      "symbol": "R_B16",
+      "description": "Coil 16 deviation from reference resistance (Bitters)"
+    },
+    {
+      "name": "Tcal16",
+      "field_type": "temperature",
+      "unit": "celsius",
+      "symbol": "T_B16",
+      "description": "Coil 16 temperature (Bitters)"
+    },
+    {
+      "name": "Pmagnet",
+      "field_type": "power",
+      "unit": "megawatt",
+      "symbol": "P_mag",
+      "description": "Magnet power"
+    },
+    {
+      "name": "Ptot",
+      "field_type": "power",
+      "unit": "megawatt",
+      "symbol": "P_tot",
+      "description": "Total power"
+    },
+    {
+      "name": "Q",
+      "field_type": "power",
+      "unit": "megavar",
+      "symbol": "Q",
+      "description": "Reactive power"
+    }
+  ]
+}

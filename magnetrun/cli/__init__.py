@@ -1,0 +1,1 @@
+"""MagnetRun CLI package."""

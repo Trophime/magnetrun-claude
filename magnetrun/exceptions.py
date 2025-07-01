@@ -1,21 +1,26 @@
-"""Custom exceptions for the MagnetRun package."""
 
-class MagnetDataError(Exception):
-    """Base exception for MagnetData operations."""
+"""Exception classes for MagnetRun package."""
+
+class MagnetRunError(Exception):
+    """Base exception class for MagnetRun."""
     pass
 
-class DataFormatError(MagnetDataError):
-    """Raised when data format is invalid."""
+class FileFormatError(MagnetRunError):
+    """Raised when file format is not supported or invalid."""
     pass
 
-class UnitConversionError(MagnetDataError):
+class DataFormatError(MagnetRunError):
+    """Raised when data format is invalid or corrupted."""
+    pass
+
+class KeyNotFoundError(MagnetRunError):
+    """Raised when requested data key is not found."""
+    pass
+
+class UnitConversionError(MagnetRunError):
     """Raised when unit conversion fails."""
     pass
 
-class KeyNotFoundError(MagnetDataError):
-    """Raised when a data key is not found."""
-    pass
-
-class FileFormatError(MagnetDataError):
-    """Raised when file format is not supported."""
+class AnalysisError(MagnetRunError):
+    """Raised when analysis operation fails."""
     pass
