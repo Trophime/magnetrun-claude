@@ -1,29 +1,6 @@
 {
   "metadata": {
-    "description": "M9 housing configuration for hybrid magnet",
-    "timestamp": "2025-01-07T14:30:00Z"
-  },
-  
-  "voltage_tap_locations": {
-    "Ucoil1": [0.12, 0.0, -0.45],
-    "Ucoil2": [0.12, 0.0, -0.35],
-    "Ucoil3": [0.12, 0.0, -0.25],
-    "Ucoil4": [0.12, 0.0, -0.15],
-    "Ucoil5": [0.12, 0.0, -0.05],
-    "Ucoil6": [0.12, 0.0, 0.05],
-    "Ucoil7": [0.12, 0.0, 0.15],
-    "Ucoil8": [0.12, 0.0, 0.25],
-    "Ucoil9": [0.12, 0.0, 0.35],
-    "Ucoil10": [0.12, 0.0, 0.45],
-    "Ucoil11": [0.12, 0.0, 0.55],
-    "Ucoil12": [0.12, 0.0, 0.65],
-    "Ucoil13": [0.12, 0.0, 0.75],
-    "Ucoil14": [0.12, 0.0, 0.85]
-  },
-  
-{
-  "metadata": {
-    "description": "M9 housing configuration for hybrid magnet",
+    "description": "M9 housing configuration",
     "timestamp": "2025-01-07T14:30:00Z"
   },
   

@@ -1,7 +1,6 @@
-# magnetrun/formats/registry.py (UPDATED)
+# magnetrun/formats/registry.py (UPDATED with lazy loading)
 """Unified registry for data formats, readers, handlers, and field definitions."""
 
-import json
 from pathlib import Path
 from typing import Dict, Type, List, Optional, Union
 from pint import UnitRegistry
@@ -21,10 +20,16 @@ class FormatRegistry:
         self._format_definitions: Dict[str, FormatDefinition] = {}
         self.ureg = self._create_unit_registry()
         self.configs_dir = configs_dir or (Path(__file__).parent / "configs")
+        self._initialized = False
         
-        # Load everything
+        # Load format definitions first
         self._load_format_definitions()
-        self._register_built_in_formats()
+
+    def _ensure_initialized(self):
+        """Ensure built-in formats are registered (lazy initialization)."""
+        if not self._initialized:
+            self._register_built_in_formats()
+            self._initialized = True
 
     def _create_unit_registry(self) -> UnitRegistry:
         """Create shared unit registry."""
@@ -49,17 +54,20 @@ class FormatRegistry:
                 print(f"Warning: Failed to load format definition from {json_file}: {e}")
 
     def _register_built_in_formats(self):
-        """Register built-in format readers and handlers."""
-        from .pupitre_data import PupitreData
-        from .pigbrother_data import PigbrotherData
-        from .bprofile_data import BprofileData
-        from ..io.pupitre_reader import PupitreReader
-        from ..io.pigbrother_reader import PigbrotherReader
-        from ..io.bprofile_reader import BprofileReader
+        """Register built-in format readers and handlers (called lazily)."""
+        try:
+            from .pupitre_data import PupitreData
+            from .pigbrother_data import PigbrotherData
+            from .bprofile_data import BprofileData
+            from ..io.pupitre_reader import PupitreReader
+            from ..io.pigbrother_reader import PigbrotherReader
+            from ..io.bprofile_reader import BprofileReader
 
-        self.register_format("pupitre", PupitreReader, PupitreData)
-        self.register_format("pigbrother", PigbrotherReader, PigbrotherData)
-        self.register_format("bprofile", BprofileReader, BprofileData)
+            self.register_format("pupitre", PupitreReader, PupitreData)
+            self.register_format("pigbrother", PigbrotherReader, PigbrotherData)
+            self.register_format("bprofile", BprofileReader, BprofileData)
+        except ImportError as e:
+            print(f"Warning: Could not register some built-in formats: {e}")
 
     def register_format(self, format_name: str, reader_class: Type[BaseReader], data_handler_class: Type[BaseData]):
         """Register a format with its reader and data handler."""
@@ -77,18 +85,21 @@ class FormatRegistry:
 
     def get_reader(self, format_name: str) -> Type[BaseReader]:
         """Get reader class for format."""
+        self._ensure_initialized()
         if format_name not in self._readers:
             raise ValueError(f"Unknown format: {format_name}")
         return self._readers[format_name]
 
     def get_data_handler(self, format_name: str) -> Type[BaseData]:
         """Get data handler class for format."""
+        self._ensure_initialized()
         if format_name not in self._data_handlers:
             raise ValueError(f"Unknown format: {format_name}")
         return self._data_handlers[format_name]
 
     def get_supported_formats(self) -> List[str]:
         """Get list of supported formats."""
+        self._ensure_initialized()
         return list(self._readers.keys())
 
     def list_format_definitions(self) -> List[str]:
@@ -130,5 +141,5 @@ class FormatRegistry:
             return value
 
 
-# Global registry instance
+# Global registry instance (lazy initialization)
 format_registry = FormatRegistry()

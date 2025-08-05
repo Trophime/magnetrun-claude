@@ -4,7 +4,7 @@
 from pathlib import Path
 from typing import Optional, List
 from .base_reader import BaseReader
-from ..formats.registry import format_registry
+
 
 class FormatDetector:
     """Automatically detect file format based on content and extension."""
@@ -15,6 +15,9 @@ class FormatDetector:
     
     def _initialize_readers(self) -> None:
         """Initialize all registered readers."""
+        # Import here to avoid circular import
+        from ..formats.registry import format_registry
+        
         for format_name in format_registry.get_supported_formats():
             reader_class = format_registry.get_reader(format_name)
             self._readers.append(reader_class())

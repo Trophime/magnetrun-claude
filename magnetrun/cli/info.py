@@ -2,10 +2,22 @@
 
 import click
 from pathlib import Path
-from .utils import load_magnet_data, handle_error
+
+# FIXED: Import directly from module instead of top-level package
+from ..core.magnet_data import MagnetData
+from ..core.magnet_run import MagnetRun
 from ..io.writers import DataWriter
 from ..formats.registry import format_registry
 from ..io.format_detector import FormatDetector
+
+
+def load_magnet_data(file_path, housing, site=""):
+    """Load magnet data - moved here to avoid circular import."""
+    magnet_data = MagnetData.from_file(file_path)
+    magnet_run = MagnetRun(housing, site, magnet_data)
+    return magnet_data, magnet_run
+
+
 
 
 @click.group(name="info")

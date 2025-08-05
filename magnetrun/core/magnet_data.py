@@ -11,8 +11,6 @@ from ..formats import FormatRegistry, FormatDefinition
 from ..core.fields import Field, FieldType, create_format_config_from_data
 
 from ..exceptions import FileFormatError, KeyNotFoundError
-from ..io.format_detector import FormatDetector
-from ..formats.registry import format_registry
 
 class MagnetData:
     """Main factory class for handling magnetic measurement data with updated field management."""
@@ -38,6 +36,10 @@ class MagnetData:
         
         if not filepath.exists():
             raise FileNotFoundError(f"File not found: {filepath}")
+        
+        # Import here to avoid circular imports
+        from ..io.format_detector import FormatDetector
+        from ..formats.registry import format_registry
         
         # Detect format
         detector = FormatDetector()

@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from typing import List, Dict, Any, Union, Optional
 import numpy as np
 import pandas as pd
-from ..exceptions import KeyNotFoundError
+from ..exceptions import DataFormatError, KeyNotFoundError
 
 
 class BaseData(ABC):
@@ -23,17 +23,56 @@ class BaseData(ABC):
         """Get available data keys."""
         return self._keys.copy()
 
-    @abstractmethod
     def get_data(self, key: Optional[Union[str, List[str]]] = None) -> pd.DataFrame:
         """Get data for specified keys."""
-        pass
+        if key is None:
+            return self.data.copy()
 
-    @abstractmethod
+        selected_keys = self.validate_keys(key)
+        return self.data[selected_keys].copy()
+
     def add_data(
         self, key: str, data_input: Union[str, pd.Series, np.ndarray], **kwargs
     ) -> None:
         """Add new calculated column."""
-        pass
+        if key in self._keys:
+            print(f"Warning: Key {key} already exists in DataFrame, overwriting")
+
+        try:
+            if isinstance(data_input, str):
+                self._add_formula(key, data_input)
+            elif isinstance(data_input, (pd.Series, np.ndarray, list)):
+                self._add_direct_data(key, data_input)
+            else:
+                raise DataFormatError(
+                    f"Unsupported data input type: {type(data_input)}"
+                )
+
+            if key not in self._keys:
+                self._keys.append(key)
+
+        except Exception as e:
+            raise DataFormatError(f"Failed to add data for key '{key}': {e}")
+
+    def _add_formula(self, key: str, formula: str) -> None:
+        """Add data using a pandas eval formula."""
+        try:
+            if "=" in formula:
+                _, expression = formula.split("=", 1)
+                expression = expression.strip()
+            else:
+                expression = formula
+
+            self.data[key] = self.data.eval(expression)
+
+        except Exception as e:
+            try:
+                if expression.strip() in self.data.columns:
+                    self.data[key] = self.data[expression.strip()]
+                else:
+                    raise e
+            except:
+                raise DataFormatError(f"Failed to evaluate formula '{formula}': {e}")
 
     def validate_keys(self, keys: Union[str, List[str]]) -> List[str]:
         """Validate that keys exist in the dataset."""
