@@ -1,0 +1,27 @@
+{
+  "format_name": "pupitre",
+  "metadata": {},
+  "fields": [
+    {
+      "name": "Field",
+      "field_type": "magnetic_field",
+      "unit": "tesla",
+      "symbol": "B",
+      "description": "Auto-detected field: Field"
+    },
+    {
+      "name": "Current",
+      "field_type": "current",
+      "unit": "ampere",
+      "symbol": "I",
+      "description": "Auto-detected field: Current"
+    },
+    {
+      "name": "t",
+      "field_type": "time",
+      "unit": "second",
+      "symbol": "t",
+      "description": "Auto-detected field: t"
+    }
+  ]
+}
