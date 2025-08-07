@@ -124,8 +124,8 @@ MagnetRun now uses JSON configuration files for field definitions, making it muc
       "name": "Field",
       "field_type": "magnetic_field",
       "unit": "tesla",
-      "symbol": "B_res",
-      "description": "Resistive magnet field"
+      "symbol": "B_z",
+      "description": "Resistive magnet field z component at the center",
     },
     {
       "name": "Current",
@@ -411,12 +411,6 @@ magnetrun formats validate pupitre
 # Show field information
 magnetrun formats fields pupitre --field-type current
 
-# Check unit compatibility
-magnetrun formats units pupitre Field
-
-# Convert between units
-magnetrun formats convert pupitre tesla gauss 1.5
-```
 
 ### Enhanced Data Processing with Field Awareness
 
