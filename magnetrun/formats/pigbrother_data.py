@@ -1,8 +1,7 @@
 """PigBrother TDMS-specific data operations with integrated format definition."""
 
-
 from typing import List, Dict, Optional
-from ..core.base_data import TDMSBasedData
+from ..core.tdms_data import TDMSBasedData
 
 
 class PigbrotherData(TDMSBasedData):

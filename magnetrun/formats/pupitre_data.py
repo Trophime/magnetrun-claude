@@ -2,7 +2,7 @@
 
 import pandas as pd
 from typing import Dict, Optional
-from ..core.base_data import PandasBasedData
+from ..core.pandas_data import PandasBasedData
 
 
 class PupitreData(PandasBasedData):

@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 from typing import Dict, List, Optional, Union, Any
 from pint import UnitRegistry
+from ..core.fields import Field  # Import Field to avoid circular import
 
 
 class FormatDefinition:
@@ -12,7 +13,7 @@ class FormatDefinition:
 
     def __init__(self, format_name: str, ureg: Optional[UnitRegistry] = None):
         self.format_name = format_name
-        self.fields: Dict[str, 'Field'] = {}  # Use string annotation to avoid import
+        self.fields: Dict[str, Field] = {}  # Use string annotation to avoid import
         self.metadata: Dict = {}
         self.ureg = ureg or self._create_unit_registry()
 
@@ -83,24 +84,46 @@ class FormatDefinition:
 
         # Import FieldType here to avoid circular import
         from ..core.fields import FieldType
-        
+
         # Common compatible units by field type
         compatible_map = {
             FieldType.MAGNETIC_FIELD: ["tesla", "gauss", "millitesla", "T", "G", "mT"],
             FieldType.CURRENT: ["ampere", "milliampere", "kiloampere", "A", "mA", "kA"],
             FieldType.VOLTAGE: ["volt", "millivolt", "kilovolt", "V", "mV", "kV"],
             FieldType.TEMPERATURE: ["celsius", "kelvin", "fahrenheit", "°C", "K", "°F"],
-            FieldType.PRESSURE: ["pascal", "bar", "atmosphere", "torr", "Pa", "bar", "atm"],
+            FieldType.PRESSURE: [
+                "pascal",
+                "bar",
+                "atmosphere",
+                "torr",
+                "Pa",
+                "bar",
+                "atm",
+            ],
             FieldType.POWER: ["watt", "kilowatt", "megawatt", "W", "kW", "MW"],
             FieldType.RESISTANCE: ["ohm", "milliohm", "kiloohm", "Ω", "mΩ", "kΩ"],
             FieldType.FLOW_RATE: ["liter/minute", "meter**3/hour", "L/min", "m³/h"],
             FieldType.ROTATION_SPEED: ["rpm", "hertz", "radian/second", "Hz", "rad/s"],
             FieldType.TIME: ["second", "minute", "hour", "s", "min", "h"],
             FieldType.PERCENTAGE: ["percent", "dimensionless", "%"],
-            FieldType.COORDINATE: ["meter", "centimeter", "millimeter", "m", "cm", "mm"],
+            FieldType.COORDINATE: [
+                "meter",
+                "centimeter",
+                "millimeter",
+                "m",
+                "cm",
+                "mm",
+            ],
             FieldType.LENGTH: ["meter", "centimeter", "millimeter", "m", "cm", "mm"],
             FieldType.AREA: ["square_meter", "square_centimeter", "m**2", "cm**2"],
-            FieldType.VOLUME: ["cubic_meter", "liter", "cubic_centimeter", "m**3", "L", "cm**3"],
+            FieldType.VOLUME: [
+                "cubic_meter",
+                "liter",
+                "cubic_centimeter",
+                "m**3",
+                "L",
+                "cm**3",
+            ],
             FieldType.INDEX: ["dimensionless"],
         }
 
@@ -120,14 +143,16 @@ class FormatDefinition:
         }
 
     @classmethod
-    def from_dict(cls, data: Dict, ureg: Optional[UnitRegistry] = None) -> "FormatDefinition":
+    def from_dict(
+        cls, data: Dict, ureg: Optional[UnitRegistry] = None
+    ) -> "FormatDefinition":
         """Create from dictionary."""
         format_def = cls(data["format_name"], ureg)
         format_def.metadata = data.get("metadata", {})
 
         # Import Field here to avoid circular import
         from ..core.fields import Field
-        
+
         for field_data in data.get("fields", []):
             field = Field.from_dict(field_data)
             format_def.add_field(field)
@@ -141,7 +166,9 @@ class FormatDefinition:
             json.dump(self.to_dict(), f, indent=2)
 
     @classmethod
-    def load_from_file(cls, filepath: Union[str, Path], ureg: Optional[UnitRegistry] = None) -> "FormatDefinition":
+    def load_from_file(
+        cls, filepath: Union[str, Path], ureg: Optional[UnitRegistry] = None
+    ) -> "FormatDefinition":
         """Load format definition from JSON file."""
         filepath = Path(filepath)
         with open(filepath, "r") as f:
