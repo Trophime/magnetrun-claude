@@ -299,15 +299,6 @@ class MagnetData:
         else:
             return field.convert_values(values, target_unit, self._field_registry.ureg)
 
-    def get_compatible_units(self, key: str) -> List[str]:
-        """Get list of compatible units for a field."""
-        # CORRECTED: Try to get from data handler first (if it has integrated definition)
-        if hasattr(self._data_handler, "get_compatible_units"):
-            return self._data_handler.get_compatible_units(key)
-
-        # Fallback to format definition
-        return self._format_def.get_compatible_units(key)
-
     def _get_field_coverage(self) -> float:
         """Calculate percentage of keys that have field definitions."""
         if not self.keys:

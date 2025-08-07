@@ -677,61 +677,6 @@ def merge(
 
 
 @formats.command()
-@click.argument("format_name")
-@click.argument("from_unit")
-@click.argument("to_unit")
-@click.argument("value", type=float)
-def convert(format_name: str, from_unit: str, to_unit: str, value: float):
-    """Convert values between units using format registry."""
-    config_manager = get_config_manager()
-    registry = FormatRegistry(config_manager)
-
-    try:
-        converted_value = registry.convert_between_units(value, from_unit, to_unit)
-        click.echo(f"{value} {from_unit} = {converted_value} {to_unit}")
-    except Exception as e:
-        click.echo(f"Conversion failed: {e}", err=True)
-        sys.exit(1)
-
-
-@formats.command()
-@click.argument("format_name")
-@click.argument("field_name")
-def units(format_name: str, field_name: str):
-    """Show compatible units for a field from centralized config."""
-    config_manager = get_config_manager()
-    registry = FormatRegistry(config_manager)
-    format_def = registry.get_format(format_name)
-
-    if not format_def:
-        click.echo(f"Format '{format_name}' not found.", err=True)
-        sys.exit(1)
-
-    field = format_def.get_field(field_name)
-    if not field:
-        click.echo(
-            f"Field '{field_name}' not found in format '{format_name}'.", err=True
-        )
-        available_fields = list(format_def.fields.keys())
-        click.echo(f"Available fields: {', '.join(available_fields)}")
-        sys.exit(1)
-
-    compatible_units = format_def.get_compatible_units(field_name)
-
-    click.echo(f"Field: {field.name}")
-    click.echo(f"Current unit: {field.unit}")
-    click.echo(f"Symbol: {field.symbol}")
-    click.echo(f"Type: {field.field_type.value}")
-    click.echo("\nCompatible units:")
-    for unit in compatible_units:
-        click.echo(f"  {unit}")
-
-    # Show config file path
-    config_path = config_manager.get_format_config_path(format_name)
-    click.echo(f"\nConfiguration file: {config_path}")
-
-
-@formats.command()
 @click.option("--export-dir", type=click.Path(), help="Directory to export all formats")
 def backup(export_dir: Optional[str]):
     """Backup all format configurations from centralized config."""

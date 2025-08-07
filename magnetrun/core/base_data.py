@@ -148,12 +148,6 @@ class BaseData(ABC):
         else:
             return field.convert_values(values, target_unit, self.definition.ureg)
 
-    def get_compatible_units(self, key: str) -> List[str]:
-        """Get list of compatible units for a field using integrated definition - shared implementation."""
-        if self.definition:
-            return self.definition.get_compatible_units(key)
-        return []
-
     # Abstract method for format-specific data addition
     @abstractmethod
     def add_data(

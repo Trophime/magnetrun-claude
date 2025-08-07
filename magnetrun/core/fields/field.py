@@ -95,14 +95,11 @@ class Field:
 
     def is_compatible_unit(self, target_unit: str, ureg: UnitRegistry) -> bool:
         """Check if target unit is compatible with field unit."""
-        try:
-            source_unit = self.get_unit_object(ureg)
-            target_unit_obj = ureg.parse_expression(target_unit)
-
-            # Check if they have the same dimensionality
-            return source_unit.check(f"[{target_unit_obj.dimensionality}]")
-        except Exception:
-            return False
+        print(
+            f"Checking compatibility for {self.name} ({self.unit}) with target unit '{target_unit}'... not implemented yet.",
+            flush=True,
+        )
+        return False
 
     def get_conversion_factor(self, target_unit: str, ureg: UnitRegistry) -> float:
         """Get conversion factor to target unit (multiply field values by this)."""

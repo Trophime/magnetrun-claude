@@ -7,6 +7,20 @@ from typing import Dict, List, Optional, Union, Any
 from pint import UnitRegistry
 from ..core.fields import Field  # Import Field to avoid circular import
 
+# Global ureg instance
+_global_ureg = None
+
+
+def get_global_ureg() -> UnitRegistry:
+    """Get the global UnitRegistry instance."""
+    global _global_ureg
+    if _global_ureg is None:
+        _global_ureg = UnitRegistry(system="SI")
+        _global_ureg.define("percent = 0.01 = %")
+        _global_ureg.define("ppm = 1e-6")
+        _global_ureg.define("var = 1")  # For reactive power (VAr)
+    return _global_ureg
+
 
 class FormatDefinition:
     """Defines the structure of a data format with Pint integration."""
@@ -15,15 +29,7 @@ class FormatDefinition:
         self.format_name = format_name
         self.fields: Dict[str, Field] = {}  # Use string annotation to avoid import
         self.metadata: Dict = {}
-        self.ureg = ureg or self._create_unit_registry()
-
-    def _create_unit_registry(self) -> UnitRegistry:
-        """Create unit registry with custom magnet-specific units."""
-        ureg = UnitRegistry()
-        ureg.define("percent = 0.01 = %")
-        ureg.define("ppm = 1e-6")
-        ureg.define("var = 1")  # For reactive power (VAr)
-        return ureg
+        self.ureg = get_global_ureg()
 
     def add_field(self, field):
         """Add a field to this format."""
@@ -75,64 +81,6 @@ class FormatDefinition:
             }
         except Exception as e:
             return {"valid": False, "error": str(e)}
-
-    def get_compatible_units(self, field_name: str) -> List[str]:
-        """Get list of compatible units for a field."""
-        field = self.get_field(field_name)
-        if not field:
-            return []
-
-        # Import FieldType here to avoid circular import
-        from ..core.fields import FieldType
-
-        # Common compatible units by field type
-        compatible_map = {
-            FieldType.MAGNETIC_FIELD: ["tesla", "gauss", "millitesla", "T", "G", "mT"],
-            FieldType.CURRENT: ["ampere", "milliampere", "kiloampere", "A", "mA", "kA"],
-            FieldType.VOLTAGE: ["volt", "millivolt", "kilovolt", "V", "mV", "kV"],
-            FieldType.TEMPERATURE: ["celsius", "kelvin", "fahrenheit", "°C", "K", "°F"],
-            FieldType.PRESSURE: [
-                "pascal",
-                "bar",
-                "atmosphere",
-                "torr",
-                "Pa",
-                "bar",
-                "atm",
-            ],
-            FieldType.POWER: ["watt", "kilowatt", "megawatt", "W", "kW", "MW"],
-            FieldType.RESISTANCE: ["ohm", "milliohm", "kiloohm", "Ω", "mΩ", "kΩ"],
-            FieldType.FLOW_RATE: ["liter/minute", "meter**3/hour", "L/min", "m³/h"],
-            FieldType.ROTATION_SPEED: ["rpm", "hertz", "radian/second", "Hz", "rad/s"],
-            FieldType.TIME: ["second", "minute", "hour", "s", "min", "h"],
-            FieldType.PERCENTAGE: ["percent", "dimensionless", "%"],
-            FieldType.COORDINATE: [
-                "meter",
-                "centimeter",
-                "millimeter",
-                "m",
-                "cm",
-                "mm",
-            ],
-            FieldType.LENGTH: ["meter", "centimeter", "millimeter", "m", "cm", "mm"],
-            FieldType.AREA: ["square_meter", "square_centimeter", "m**2", "cm**2"],
-            FieldType.VOLUME: [
-                "cubic_meter",
-                "liter",
-                "cubic_centimeter",
-                "m**3",
-                "L",
-                "cm**3",
-            ],
-            FieldType.INDEX: ["dimensionless"],
-        }
-
-        candidates = compatible_map.get(field.field_type, [])
-        compatible = []
-        for unit_str in candidates:
-            if field.is_compatible_unit(unit_str, self.ureg):
-                compatible.append(unit_str)
-        return compatible
 
     def to_dict(self) -> Dict:
         """Convert to dictionary for JSON serialization."""
