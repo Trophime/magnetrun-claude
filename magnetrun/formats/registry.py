@@ -6,7 +6,7 @@ from pint import UnitRegistry
 
 from ..core.base_data import BaseData
 from ..io.base_reader import BaseReader
-from .format_definition import FormatDefinition
+from .format_definition import get_global_ureg, FormatDefinition
 from .centralized_config import ConfigManager, get_config_manager
 
 
@@ -17,25 +17,19 @@ class FormatRegistry:
         self._readers: Dict[str, Type[BaseReader]] = {}
         self._data_handlers: Dict[str, Type[BaseData]] = {}
         self._format_definitions: Dict[str, FormatDefinition] = {}
-        self.ureg = self._create_unit_registry()
+        self.ureg = get_global_ureg()  # self._create_unit_registry()
 
         # Use centralized config manager
         self.config_manager = config_manager or get_config_manager()
 
         # Load everything
+        print("Init FormatRegistry", flush=True)
         self._load_format_definitions()
         self._register_built_in_formats()
 
-    def _create_unit_registry(self) -> UnitRegistry:
-        """Create shared unit registry."""
-        ureg = UnitRegistry()
-        ureg.define("percent = 0.01 = %")
-        ureg.define("ppm = 1e-6")
-        ureg.define("var = 1")  # For reactive power (VAr)
-        return ureg
-
     def _load_format_definitions(self):
         """Load format definitions using centralized config system."""
+        print("Loading format definitions from centralized config...")
         format_names = self.config_manager.list_configs("format")
 
         for format_name in format_names:
@@ -139,6 +133,7 @@ class FormatRegistry:
 
     def reload_formats(self):
         """Reload all format definitions from centralized config."""
+        print("reload_formats definition")
         self._format_definitions.clear()
         self.config_manager.clear_cache()
         self._load_format_definitions()
@@ -236,4 +231,14 @@ class FormatRegistry:
 
 
 # Updated global registry instance that uses centralized config
-format_registry = FormatRegistry()
+format_registry = None
+
+
+def get_format_registry() -> FormatRegistry:
+    """Get global format registry."""
+    global format_registry
+    # print("get_format_registry definition", format_registry, flush=True)
+    if format_registry is None:
+        # print("create format_registry")
+        format_registry = FormatRegistry()
+    return format_registry

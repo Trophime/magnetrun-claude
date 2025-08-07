@@ -14,6 +14,7 @@ _global_ureg = None
 def get_global_ureg() -> UnitRegistry:
     """Get the global UnitRegistry instance."""
     global _global_ureg
+    # print("get_global_ureg", _global_ureg, flush=True)
     if _global_ureg is None:
         _global_ureg = UnitRegistry(system="SI")
         _global_ureg.define("percent = 0.01 = %")

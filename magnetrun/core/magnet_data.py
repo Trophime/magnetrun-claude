@@ -47,7 +47,7 @@ class MagnetData:
 
         # Import here to avoid circular imports
         from ..io.format_detector import FormatDetector
-        from ..formats.registry import format_registry
+        from ..formats.registry import get_format_registry
 
         # Detect format
         detector = FormatDetector()
@@ -61,7 +61,7 @@ class MagnetData:
         file_data = reader.read(filepath)
 
         # Create appropriate data handler
-        handler_class = format_registry.get_data_handler(format_name)
+        handler_class = get_format_registry().get_data_handler(format_name)
 
         # Create handler based on format
         if format_name in ["bprofile", "pupitre"]:

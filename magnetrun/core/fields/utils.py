@@ -8,13 +8,12 @@ from .field import Field
 from .field_types import FieldType
 
 
-def create_format_config_from_data(
-    data_keys: List[str], format_name: str, ureg: Optional[UnitRegistry] = None
-):
+def create_format_config_from_data(data_keys: List[str], format_name: str):
     """Create a format configuration from a list of data keys (for new formats)."""
     # Import here to avoid circular import
-    from ...formats.format_definition import FormatDefinition
-    
+    from ...formats.format_definition import get_global_ureg, FormatDefinition
+
+    ureg = get_global_ureg()
     format_def = FormatDefinition(format_name, ureg)
 
     for key in data_keys:
@@ -163,7 +162,7 @@ def merge_format_definitions(base_format, overlay_format):
     """Merge two format definitions, with overlay taking precedence."""
     # Import here to avoid circular import
     from ...formats.format_definition import FormatDefinition
-    
+
     merged = FormatDefinition(base_format.format_name, base_format.ureg)
 
     # Copy base metadata and fields

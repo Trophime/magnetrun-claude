@@ -1,62 +1,64 @@
-
 """Unit management for MagnetRun data."""
 
-from typing import Tuple, Optional, Dict, Any
-from pint import UnitRegistry
+from typing import Tuple, Any
+
 
 class UnitManager:
     """Manages units and unit conversions for magnetic data."""
-    
+
     def __init__(self):
-        self.ureg = UnitRegistry()
-        self.ureg.define("percent = 1 / 100 = %")
-        self.ureg.define("ppm = 1e-6 = ppm")
-        self.ureg.define("var = 1")
-        
+        from ..formats.format_definition import get_global_ureg
+
+        ureg = get_global_ureg()
+
         self._pigbrother_units = {
-            "Courant": ("I", self.ureg.ampere),
-            "Tension": ("U", self.ureg.volt),
-            "Puissance": ("Power", self.ureg.watt),
-            "Champ_magn": ("B", self.ureg.gauss),
+            "Courant": ("I", ureg.ampere),
+            "Tension": ("U", ureg.volt),
+            "Puissance": ("Power", ureg.watt),
+            "Champ_magn": ("B", ureg.gauss),
         }
-    
+
     def get_pigbrother_units(self, key: str) -> Tuple[str, Any]:
         """Get units for PigBrother data keys."""
         for entry in self._pigbrother_units:
             if entry in key:
                 return self._pigbrother_units[entry]
         return ("", None)
-    
+
     def infer_units_from_key(self, key: str) -> Tuple[str, Any]:
         """Infer units from key name."""
+        from ..formats.format_definition import get_global_ureg
+
+        ureg = get_global_ureg()
+
         if key == "timestamp":
             return ("time", None)
         elif key == "t":
-            return ("t", self.ureg.second)
+            return ("t", ureg.second)
         elif key == "Field":
-            return ("B", self.ureg.tesla)
+            return ("B", ureg.tesla)
         elif key.startswith("I"):
-            return ("I", self.ureg.ampere)
+            return ("I", ureg.ampere)
         elif key.startswith("U"):
-            return ("U", self.ureg.volt)
+            return ("U", ureg.volt)
         elif key.startswith("T") or key in ["teb", "tsb"]:
-            return ("T", self.ureg.degC)
+            return ("T", ureg.degC)
         elif key.startswith("Rpm"):
-            return ("Rpm", self.ureg.rpm)
+            return ("Rpm", ureg.rpm)
         elif key.startswith("DR"):
-            return ("%", self.ureg.percent)
+            return ("%", ureg.percent)
         elif key.startswith("Flo"):
-            return ("Q", self.ureg.liter / self.ureg.second)
+            return ("Q", ureg.liter / ureg.second)
         elif key == "debitbrut":
-            return ("Q", self.ureg.meter**3 / self.ureg.hour)
+            return ("Q", ureg.meter**3 / ureg.hour)
         elif key.startswith("HP") or key.startswith("BP"):
-            return ("P", self.ureg.bar)
+            return ("P", ureg.bar)
         elif key in ["Pmagnet", "Ptot"] or key.startswith("Power"):
-            return ("Power", self.ureg.megawatt)
+            return ("Power", ureg.megawatt)
         elif key == "Q":
-            return ("Preac", self.ureg.megavar)
+            return ("Preac", ureg.megavar)
         elif key == "Position (mm)":
-            return ("L", self.ureg.millimeter)
+            return ("L", ureg.millimeter)
         elif "Profile" in key and "%" in key:
-            return ("%", self.ureg.percent)
+            return ("%", ureg.percent)
         return ("", None)

@@ -7,7 +7,7 @@ from pathlib import Path
 from ..core.magnet_data import MagnetData
 from ..core.magnet_run import MagnetRun
 from ..io.writers import DataWriter
-from ..formats.registry import format_registry
+from ..formats.registry import get_format_registry
 from ..io.format_detector import FormatDetector
 
 
@@ -16,8 +16,6 @@ def load_magnet_data(file_path, housing, site=""):
     magnet_data = MagnetData.from_file(file_path)
     magnet_run = MagnetRun(housing, site, magnet_data)
     return magnet_data, magnet_run
-
-
 
 
 @click.group(name="info")
@@ -79,8 +77,9 @@ def formats(ctx):
 
     detector = FormatDetector()
 
-    for format_name in format_registry.get_supported_formats():
-        reader_class = format_registry.get_reader(format_name)
+    fregistry = get_format_registry()
+    for format_name in fregistry.get_supported_formats():
+        reader_class = fregistry.get_reader(format_name)
         reader_instance = reader_class()
 
         click.echo(f"\n{format_name.upper()}")
@@ -89,7 +88,7 @@ def formats(ctx):
             f"  Description: {reader_instance.__doc__ or 'No description available'}"
         )
 
-        data_handler_class = format_registry.get_data_handler(format_name)
+        data_handler_class = fregistry.get_data_handler(format_name)
         click.echo(f"  Handler: {data_handler_class.__name__}")
 
 

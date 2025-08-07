@@ -34,9 +34,9 @@ def __getattr__(name):
 
         return DataPlotter
     elif name == "format_registry":
-        from .formats.registry import format_registry
+        from .formats.registry import get_format_registry
 
-        return format_registry
+        return get_format_registry()
     else:
         raise AttributeError(f"module '{__name__}' has no attribute '{name}'")
 
@@ -45,7 +45,7 @@ __all__ = [
     "MagnetData",
     "MagnetRun",
     "DataPlotter",
-    "format_registry",
+    "get_format_registry",
     "MagnetRunError",
     "FileFormatError",
     "DataFormatError",

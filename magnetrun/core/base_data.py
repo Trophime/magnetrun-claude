@@ -41,9 +41,9 @@ class BaseData(ABC):
                 )
 
         # Fallback to format registry
-        from ..formats.registry import format_registry
+        from ..formats.registry import get_format_registry
 
-        return format_registry.get_format_definition(self.format_type)
+        return get_format_registry().get_format_definition(self.format_type)
 
     @property
     def keys(self) -> List[str]:
@@ -161,5 +161,3 @@ class BaseData(ABC):
     def _get_underlying_data(self) -> Any:
         """Get the underlying data structure - must be implemented by subclasses."""
         pass
-
-
