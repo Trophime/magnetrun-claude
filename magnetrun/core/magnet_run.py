@@ -9,7 +9,7 @@ from .magnet_data import MagnetData
 from ..formats import FormatDefinition
 from ..core.fields import Field, FieldType
 
-from ..config.housing_configs import HOUSING_CONFIGS, HousingConfig
+from ..config.housing_configs import get_housing_config, HousingConfig
 from ..exceptions import DataFormatError
 
 
@@ -20,7 +20,7 @@ class MagnetRun:
         self.housing = housing
         self.site = site
         self.magnet_data = data
-        self._housing_config = HOUSING_CONFIGS.get(housing)
+        self._housing_config = get_housing_config(housing)
 
     @property
     def housing_config(self) -> Optional[HousingConfig]:

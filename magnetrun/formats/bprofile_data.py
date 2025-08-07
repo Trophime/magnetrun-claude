@@ -2,7 +2,7 @@
 
 from typing import Dict, Optional
 import pandas as pd
-from ..core.base_data import PandasBasedData
+from ..core.pandas_data import PandasBasedData
 
 
 class BprofileData(PandasBasedData):
