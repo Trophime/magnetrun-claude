@@ -1,313 +1,198 @@
 {
   "metadata": {
-    "description": "M9 housing configuration",
-    "timestamp": "2025-01-07T14:30:00Z"
+    "description": "M9 housing configuration - format-based field definitions only",
+    "created": "2025-08-07T14:30:00Z", 
+    "timestamp": "2025-08-07T14:35:22Z",
+    "version": "2.0",
+    "note": "This config contains only format-based field definitions. MSite probe information is handled separately for optimization."
   },
-  
   "Insert": {
     "pupitre": {
-      "current": {
-        "fields": ["Idcct1", "Idcct2"],
-        "field_type": "current",
-        "symbol": "I_insert",
-        "unit": "ampere",
-        "formula": "Idcct1 + Idcct2"
+      "groups": {
+        "current": {
+          "fields": ["Icoil1", "Icoil2", "Icoil3", "Icoil4", "Icoil5", "Icoil6", "Icoil7", "Icoil8", "Icoil9", "Icoil10", "Icoil11", "Icoil12", "Icoil13", "Icoil14"],
+          "field_type": "current",
+          "description": "Coil currents"
+        },
+        "voltage": {
+          "fields": ["Ucoil1", "Ucoil2", "Ucoil3", "Ucoil4", "Ucoil5", "Ucoil6", "Ucoil7", "Ucoil8", "Ucoil9", "Ucoil10", "Ucoil11", "Ucoil12", "Ucoil13", "Ucoil14"],
+          "field_type": "voltage",
+          "description": "Coil voltages"
+        },
+        "dresistance": {
+          "fields": ["DRcoil1", "DRcoil2", "DRcoil3", "DRcoil4", "DRcoil5", "DRcoil6", "DRcoil7", "DRcoil8", "DRcoil9", "DRcoil10", "DRcoil11", "DRcoil12", "DRcoil13", "DRcoil14"],
+          "field_type": "percentage",
+          "description": "Coil resistance deviation from reference"
+        },
+        "mean_temperature": {
+          "fields": ["Tcal1", "Tcal2", "Tcal3", "Tcal4", "Tcal5", "Tcal6", "Tcal7", "Tcal8", "Tcal9", "Tcal10", "Tcal11", "Tcal12", "Tcal13", "Tcal14"],
+          "field_type": "temperature",
+          "description": "Coil estimated mean temperature"
+        }
       },
-      "reference_current": {
-        "fields": ["Icoil1", "Icoil2", "Icoil3"],
-        "field_type": "current",
-        "symbol": "IH_ref",
-        "unit": "ampere",
-        "formula": "Icoil1 + Icoil2 + Icoil3"
+      "aliases": {
+        "Idcct1": "I_A1",
+        "Idcct2": "I_A2",
+        "Flow1": "Flow_H",
+        "Rpm1": "Rpm_H",
+        "Tin1": "Tin_H",
+        "HP1": "HP_H"
       },
-      "coil_current": {
-        "fields": ["Icoil1", "Icoil2", "Icoil3", "Icoil4", "Icoil5", "Icoil6", "Icoil7", "Icoil8", "Icoil9", "Icoil10", "Icoil11", "Icoil12", "Icoil13", "Icoil14"],
-        "field_type": "current",
-        "symbol": "I_coil",
-        "unit": "ampere"
+      "computed_fields": {
+        "I_H": {
+          "fields": ["Idcct1", "Idcct2"],
+          "field_type": "current",
+          "symbol": "I_H",
+          "unit": "ampere",
+          "formula": "Idcct1 + Idcct2"
+        },
+        "U_H": {
+          "fields": ["Ucoil1", "Ucoil2", "Ucoil3", "Ucoil4", "Ucoil5", "Ucoil6", "Ucoil7", "Ucoil8", "Ucoil9", "Ucoil10", "Ucoil11", "Ucoil12", "Ucoil13", "Ucoil14"],
+          "field_type": "voltage",
+          "symbol": "U_H",
+          "unit": "volt",
+          "formula": "Ucoil1 + Ucoil2 + Ucoil3 + Ucoil4 + Ucoil5 + Ucoil6 + Ucoil7 + Ucoil8 + Ucoil9 + Ucoil10 + Ucoil11 + Ucoil12 + Ucoil13 + Ucoil14"
+        },
+        "Power_H": {
+          "fields": ["U_H", "I_H"],
+          "field_type": "power",
+          "symbol": "P_H",
+          "unit": "megawatt",
+          "formula": "U_H * I_H"
+        }
       },
-      "coil_voltage": {
-        "fields": ["Ucoil1", "Ucoil2", "Ucoil3", "Ucoil4", "Ucoil5", "Ucoil6", "Ucoil7", "Ucoil8", "Ucoil9", "Ucoil10", "Ucoil11", "Ucoil12", "Ucoil13", "Ucoil14"],
-        "field_type": "voltage",
-        "symbol": "U_coil",
-        "unit": "volt"
-      },
-      "coil_temperature": {
-        "fields": ["Tcal1", "Tcal2", "Tcal3", "Tcal4", "Tcal5", "Tcal6", "Tcal7", "Tcal8", "Tcal9", "Tcal10", "Tcal11", "Tcal12", "Tcal13", "Tcal14"],
-        "field_type": "temperature",
-        "symbol": "T_coil",
-        "unit": "celsius"
-      },
-      "coil_resistance": {
-        "fields": ["DRcoil1", "DRcoil2", "DRcoil3", "DRcoil4", "DRcoil5", "DRcoil6", "DRcoil7", "DRcoil8", "DRcoil9", "DRcoil10", "DRcoil11", "DRcoil12", "DRcoil13", "DRcoil14"],
-        "field_type": "percentage",
-        "symbol": "ΔR_coil",
-        "unit": "percent"
-      },
-      "temperature_inlet": {
-        "fields": ["Tin1"],
-        "field_type": "temperature",
-        "symbol": "T_in1",
-        "unit": "celsius"
-      },
-      "temperature_outlet": {
-        "fields": ["Tout"],
-        "field_type": "temperature",
-        "symbol": "T_out",
-        "unit": "celsius"
-      },
-      "pressure_high": {
-        "fields": ["HP1"],
-        "field_type": "pressure",
-        "symbol": "P_H1",
-        "unit": "bar"
-      },
-      "pressure_low": {
-        "fields": ["BP"],
-        "field_type": "pressure",
-        "symbol": "P_L",
-        "unit": "bar"
-      },
-      "flow": {
-        "fields": ["Flow1"],
-        "field_type": "flow_rate",
-        "symbol": "Q_1",
-        "unit": "liter/minute"
-      },
-      "field": {
-        "fields": ["Field"],
-        "field_type": "magnetic_field",
-        "symbol": "B_res",
-        "unit": "tesla"
-      },
-      "power": {
-        "fields": ["Pmagnet"],
-        "field_type": "power",
-        "symbol": "P_mag",
-        "unit": "megawatt"
-      },
-      "total_current": {
-        "fields": ["I_total_insert"],
-        "field_type": "current",
-        "symbol": "I_tot_insert",
-        "unit": "ampere",
-        "formula": "sum(coil_current)"
-      },
-      "average_temperature": {
-        "fields": ["T_avg_insert"],
-        "field_type": "temperature",
-        "symbol": "T_avg_insert",
-        "unit": "celsius",
-        "formula": "mean(coil_temperature)"
+      "checks": {
+        "current": {
+          "group": "current",
+          "check_type": "equal",
+          "exact": "I_H",
+          "description": "Check if coil currents are consistant"
+        }
       }
     },
     "pigbrother": {
-      "current": {
-        "fields": ["Courants_Alimentations/Courant_GR1"],
-        "field_type": "current",
-        "symbol": "I_GR1",
-        "unit": "ampere"
+      "groups": {},
+      "aliases":{
+        "Tensions_Aimants/ALL_internes": "Tensions_Alimentations/U_H",
+        "Courants_Alimentations/Courant_GR1": "Courants_Alimentations/I_H"
       },
-      "reference_current": {
-        "fields": ["Courants_Alimentations/Courant_A1", "Courants_Alimentations/Courant_A2"],
-        "field_type": "current",
-        "symbol": "IH_ref",
-        "unit": "ampere",
-        "formula": "Courants_Alimentations/Courant_A1 + Courants_Alimentations/Courant_A2"
+      "computed_fields": {
+        "Courants_Alimentations/Iref_H" : {
+          "fields": ["Courants_Alimentations/Courant_A1", "Courants_Alimentations/Courant_A2"],
+          "field_type": "current",
+          "symbol": "Iref_H",
+          "unit": "ampere",
+          "formula": "Courants_Alimentations/Courant_A1 + Courants_Alimentations/Courant_A2"
+        }
       },
-      "voltage": {
-        "fields": ["Tensions_Aimant/ALL_internes"],
-        "field_type": "voltage",
-        "symbol": "U_int_all",
-        "unit": "volt"
-      },
-      "power": {
-        "fields": ["Puissances/Puissance_A1", "Puissances/Puissance_A2"],
-        "field_type": "power",
-        "symbol": "P_A12",
-        "unit": "watt"
-      },
-      "field": {
-        "fields": ["Courants_Alimentations/Champ_magn"],
-        "field_type": "magnetic_field",
-        "symbol": "B",
-        "unit": "millitesla"
-      },
-      "individual_currents": {
-        "fields": ["Courants_Alimentations/Courant_A1", "Courants_Alimentations/Courant_A2"],
-        "field_type": "current",
-        "symbol": "I_A",
-        "unit": "ampere"
-      },
-      "individual_voltages": {
-        "fields": ["Tensions_Alimentations/Tension_A1", "Tensions_Alimentations/Tension_A2"],
-        "field_type": "voltage",
-        "symbol": "U_A",
-        "unit": "volt"
-      },
-      "reference_currents": {
-        "fields": ["Courants_Alimentations/Référence_A1", "Courants_Alimentations/Référence_A2"],
-        "field_type": "current",
-        "symbol": "I_ref_A",
-        "unit": "ampere"
-      },
-      "total_power": {
-        "fields": ["P_total_insert"],
-        "field_type": "power",
-        "symbol": "P_tot_insert",
-        "unit": "watt",
-        "formula": "Puissances/Puissance_A1 + Puissances/Puissance_A2"
+      "checks": {
+        "voltage": {
+          "fields": ["Tensions_Alimentations/Tension_A1", "Tensions_Alimentations/Tension_A2"],
+          "check_type": "equal",
+          "description": "Check if coil inner power voltages are consistant"
+        } 
       }
     }
   },
-  
   "Bitters": {
-    "voltage_tap_locations": {
-      "Ucoil15": [0.25, 0.0, -0.15],
-      "Ucoil16": [0.25, 0.0, 0.15]
-    },
     "pupitre": {
-      "current": {
-        "fields": ["Idcct3", "Idcct4"],
-        "field_type": "current",
-        "symbol": "I_bitter",
-        "unit": "ampere",
-        "formula": "Idcct3 + Idcct4"
+      "groups": {
+        "current": {
+          "fields": ["Icoil15", "Icoil16"],
+          "field_type": "current",
+          "description": "Coil currents"
+        },
+        "voltage": {
+          "fields": ["Ucoil15", "Ucoil16"],
+          "field_type": "voltage",
+          "description": "Coil voltages"
+        },
+        "dresistance": {
+          "fields": ["DRcoil15", "DRcoil16"],
+          "field_type": "percentage",
+          "description": "Coil resistance deviation from reference"
+        },
+        "mean_temperature": {
+          "fields": ["Tcal15", "Tcal16"],
+          "field_type": "temperature",
+          "description": "Coil estimated mean temperature"
+        }
       },
-      "reference_current": {
-        "fields": ["Icoil15", "Icoil16"],
-        "field_type": "current",
-        "symbol": "IB_ref",
-        "unit": "ampere",
-        "formula": "Icoil15 + Icoil16"
+      "aliases": {
+        "Idcct3": "I_A3",
+        "Idcct4": "I_A4",
+        "Flow2": "Flow_B",
+        "Rpm2": "Rpm_B",
+        "Tin2": "Tin_B",
+        "HP2": "HP_B"
       },
-      "coil_current": {
-        "fields": ["Icoil15", "Icoil16"],
-        "field_type": "current",
-        "symbol": "I_bitter_coil",
-        "unit": "ampere"
+      "computed_fields": {
+        "I_B": {
+          "fields": ["Idcct3", "Idcct4"],
+          "field_type": "current",
+          "symbol": "I_B",
+          "unit": "ampere",
+          "formula": "Idcct3 + Idcct4"
+        },
+        "U_B": {
+          "fields": ["Ucoil15", "Ucoil16"],
+          "field_type": "voltage",
+          "symbol": "U_B",
+          "unit": "volt",
+          "formula": "Ucoil15 + Ucoil16"
+        },
+        "Power_B": {
+          "fields": ["U_H", "I_H"],
+          "field_type": "power",
+          "symbol": "P_H",
+          "unit": "megawatt",
+          "formula": "U_H * I_H"
+        }
       },
-      "coil_voltage": {
-        "fields": ["Ucoil15", "Ucoil16"],
-        "field_type": "voltage",
-        "symbol": "U_bitter_coil",
-        "unit": "volt"
-      },
-      "coil_temperature": {
-        "fields": ["Tcal15", "Tcal16"],
-        "field_type": "temperature",
-        "symbol": "T_bitter_coil",
-        "unit": "celsius"
-      },
-      "coil_resistance": {
-        "fields": ["DRcoil15", "DRcoil16"],
-        "field_type": "percentage",
-        "symbol": "ΔR_bitter_coil",
-        "unit": "percent"
-      },
-      "temperature_inlet": {
-        "fields": ["Tin2"],
-        "field_type": "temperature",
-        "symbol": "T_in2",
-        "unit": "celsius"
-      },
-      "pressure_high": {
-        "fields": ["HP2"],
-        "field_type": "pressure",
-        "symbol": "P_H2",
-        "unit": "bar"
-      },
-      "flow": {
-        "fields": ["Flow2"],
-        "field_type": "flow_rate",
-        "symbol": "Q_2",
-        "unit": "liter/minute"
+      "checks": {
+        "current": {
+          "group": "current",
+          "check_type": "equal",
+          "exact": "I_B",
+          "description": "Check if coil currents are consistant"
+        }
       }
     },
     "pigbrother": {
-      "current": {
-        "fields": ["Courants_Alimentations/Courant_GR2"],
-        "field_type": "current",
-        "symbol": "I_GR2",
-        "unit": "ampere"
+      "groups": {},
+      "aliases":{
+        "Tensions_Aimants/ALL_externes": "Tensions_Alimentations/U_B",
+        "Courants_Alimentations/Courant_GR2": "Courants_Alimentations/I_B"
       },
-      "reference_current": {
-        "fields": ["Courants_Alimentations/Courant_A3", "Courants_Alimentations/Courant_A4"],
-        "field_type": "current",
-        "symbol": "IB_ref",
-        "unit": "ampere",
-        "formula": "Courants_Alimentations/Courant_A3 + Courants_Alimentations/Courant_A4"
-      },
-      "voltage": {
-        "fields": ["Tensions_Aimant/ALL_externes"],
-        "field_type": "voltage",
-        "symbol": "U_ext_all",
-        "unit": "volt"
-      },
-      "power": {
-        "fields": ["Puissances/Puissance_A3", "Puissances/Puissance_A4"],
-        "field_type": "power",
-        "symbol": "P_A34",
-        "unit": "watt"
-      },
-      "individual_currents": {
-        "fields": ["Courants_Alimentations/Courant_A3", "Courants_Alimentations/Courant_A4"],
-        "field_type": "current",
-        "symbol": "I_A34",
-        "unit": "ampere"
-      },
-      "individual_voltages": {
-        "fields": ["Tensions_Alimentations/Tension_A3", "Tensions_Alimentations/Tension_A4"],
-        "field_type": "voltage",
-        "symbol": "U_A34",
-        "unit": "volt"
-      },
-      "reference_currents": {
-        "fields": ["Courants_Alimentations/Référence_A3", "Courants_Alimentations/Référence_A4"],
-        "field_type": "current",
-        "symbol": "I_ref_A34",
-        "unit": "ampere"
+      "computed_fields": {
+        "Courants_Alimentations/Iref_B" : {
+          "fields": ["Courants_Alimentations/Courant_A1", "Courants_Alimentations/Courant_A2"],
+          "field_type": "current",
+          "symbol": "Iref_H",
+          "unit": "ampere",
+          "formula": "Courants_Alimentations/Courant_A1 + Courants_Alimentations/Courant_A2"
+        }
+    },
+      "checks": {
+        "voltage": {
+          "fields": ["Tensions_Alimentations/Tension_A3", "Tensions_Alimentations/Tension_A4"],
+          "check_type": "equal",
+          "description": "Check if coil inner power voltages are consistant"
+        }
       }
     }
   },
-  
   "Supras": {
-    "voltage_tap_locations": {
-      "Ucoil1": [0.08, 0.0, 0.0]
-    },
     "pupitre": {
-      "field": {
-        "fields": ["SupraField"],
-        "field_type": "magnetic_field",
-        "symbol": "B_sc",
-        "unit": "tesla"
-      },
-      "current": {
-        "fields": ["Icoil1"],
-        "field_type": "current",
-        "symbol": "I_sc",
-        "unit": "ampere"
-      },
-      "voltage": {
-        "fields": ["Ucoil1"],
-        "field_type": "voltage",
-        "symbol": "U_sc",
-        "unit": "volt"
-      },
-      "reference_current": {
-        "fields": ["Icoil1"],
-        "field_type": "current",
-        "symbol": "I_sc_ref",
-        "unit": "ampere"
-      }
+      "groups": {},
+      "aliases": {},
+      "computed_fields": {}
     },
     "pigbrother": {
-      "field": {
-        "fields": ["Infos/Bmax"],
-        "field_type": "magnetic_field",
-        "symbol": "B_max",
-        "unit": "tesla"
-      }
+      "groups": {},
+      "aliases":{},
+      "computed_fields": {},
+      "checks": {}
     }
   }
 }
