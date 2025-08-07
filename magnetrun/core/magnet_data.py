@@ -84,7 +84,7 @@ class MagnetData:
             )
 
         # Create field registry
-        field_registry = FormatRegistry()
+        field_registry = get_format_registry()
 
         # Load field configuration if provided
         if field_config:
