@@ -31,7 +31,7 @@ class MagnetData:
         if not self._format_def:
             # Create basic format definition from data keys if not found
             self._format_def = create_format_config_from_data(
-                self._data_handler.keys, format_name, self._field_registry.ureg
+                self._data_handler.keys, format_name
             )
             self._field_registry.register_format_definition(self._format_def)
 

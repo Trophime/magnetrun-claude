@@ -559,9 +559,8 @@ def create(
 
         # Create format definition using centralized config
         config_manager = get_config_manager()
-        registry = FormatRegistry(config_manager)
         format_def = create_format_config_from_data(
-            data_keys, format_name, registry.ureg
+            data_keys, format_name
         )
 
         if description:

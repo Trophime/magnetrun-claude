@@ -2,7 +2,6 @@
 
 from typing import Dict, Type, List, Optional, Union
 from pathlib import Path
-from pint import UnitRegistry
 
 from ..core.base_data import BaseData
 from ..io.base_reader import BaseReader
@@ -23,13 +22,11 @@ class FormatRegistry:
         self.config_manager = config_manager or get_config_manager()
 
         # Load everything
-        print("Init FormatRegistry", flush=True)
         self._load_format_definitions()
         self._register_built_in_formats()
 
     def _load_format_definitions(self):
         """Load format definitions using centralized config system."""
-        print("Loading format definitions from centralized config...")
         format_names = self.config_manager.list_configs("format")
 
         for format_name in format_names:

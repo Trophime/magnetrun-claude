@@ -9,6 +9,7 @@ from ..core.magnet_run import MagnetRun
 from ..io.writers import DataWriter
 from ..formats.registry import get_format_registry
 from ..io.format_detector import FormatDetector
+from .utils import handle_error
 
 
 def load_magnet_data(file_path, housing, site=""):
@@ -75,7 +76,7 @@ def formats(ctx):
     click.echo("Supported File Formats:")
     click.echo("=" * 50)
 
-    detector = FormatDetector()
+    # detector = FormatDetector()
 
     fregistry = get_format_registry()
     for format_name in fregistry.get_supported_formats():
