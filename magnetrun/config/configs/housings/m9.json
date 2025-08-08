@@ -10,22 +10,22 @@
     "pupitre": {
       "groups": {
         "current": {
-          "fields": ["Icoil1", "Icoil2", "Icoil3", "Icoil4", "Icoil5", "Icoil6", "Icoil7", "Icoil8", "Icoil9", "Icoil10", "Icoil11", "Icoil12", "Icoil13", "Icoil14"],
+          "fields": ["Icoil1", "Icoil2", "Icoil3", "Icoil4", "Icoil5", "Icoil6", "Icoil7"],
           "field_type": "current",
           "description": "Coil currents"
         },
         "voltage": {
-          "fields": ["Ucoil1", "Ucoil2", "Ucoil3", "Ucoil4", "Ucoil5", "Ucoil6", "Ucoil7", "Ucoil8", "Ucoil9", "Ucoil10", "Ucoil11", "Ucoil12", "Ucoil13", "Ucoil14"],
+          "fields": ["Ucoil1", "Ucoil2", "Ucoil3", "Ucoil4", "Ucoil5", "Ucoil6", "Ucoil7"],
           "field_type": "voltage",
           "description": "Coil voltages"
         },
         "dresistance": {
-          "fields": ["DRcoil1", "DRcoil2", "DRcoil3", "DRcoil4", "DRcoil5", "DRcoil6", "DRcoil7", "DRcoil8", "DRcoil9", "DRcoil10", "DRcoil11", "DRcoil12", "DRcoil13", "DRcoil14"],
+          "fields": ["DRcoil1", "DRcoil2", "DRcoil3", "DRcoil4", "DRcoil5", "DRcoil6", "DRcoil7"],
           "field_type": "percentage",
           "description": "Coil resistance deviation from reference"
         },
         "mean_temperature": {
-          "fields": ["Tcal1", "Tcal2", "Tcal3", "Tcal4", "Tcal5", "Tcal6", "Tcal7", "Tcal8", "Tcal9", "Tcal10", "Tcal11", "Tcal12", "Tcal13", "Tcal14"],
+          "fields": ["Tcal1", "Tcal2", "Tcal3", "Tcal4", "Tcal5", "Tcal6", "Tcal7"],
           "field_type": "temperature",
           "description": "Coil estimated mean temperature"
         }
@@ -47,11 +47,11 @@
           "formula": "Idcct1 + Idcct2"
         },
         "U_H": {
-          "fields": ["Ucoil1", "Ucoil2", "Ucoil3", "Ucoil4", "Ucoil5", "Ucoil6", "Ucoil7", "Ucoil8", "Ucoil9", "Ucoil10", "Ucoil11", "Ucoil12", "Ucoil13", "Ucoil14"],
+          "fields": ["Ucoil1", "Ucoil2", "Ucoil3", "Ucoil4", "Ucoil5", "Ucoil6", "Ucoil7"],
           "field_type": "voltage",
           "symbol": "U_H",
           "unit": "volt",
-          "formula": "Ucoil1 + Ucoil2 + Ucoil3 + Ucoil4 + Ucoil5 + Ucoil6 + Ucoil7 + Ucoil8 + Ucoil9 + Ucoil10 + Ucoil11 + Ucoil12 + Ucoil13 + Ucoil14"
+          "formula": "Ucoil1 + Ucoil2 + Ucoil3 + Ucoil4 + Ucoil5 + Ucoil6 + Ucoil7"
         },
         "Power_H": {
           "fields": ["U_H", "I_H"],
